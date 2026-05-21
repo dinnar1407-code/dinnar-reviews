@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://dinnar.us.com/sitemap.xml

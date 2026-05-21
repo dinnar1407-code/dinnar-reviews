@@ -1,0 +1,70 @@
+baseURL: "https://dinnar.us.com/"
+locale: "en-us"
+title: "Best Tools Review 2026 — Honest SaaS & Hosting Reviews"
+theme: "PaperMod"
+
+enableRobotsTXT: true
+
+params:
+  env: production
+  description: "Honest, in-depth reviews of the best SaaS tools, hosting providers, and marketing platforms for entrepreneurs in 2026."
+  author: "Dinnar Reviews"
+
+  # Home page
+  homeInfoParams:
+    Title: "Best Tools Review 2026"
+    Content: >
+      🔍 Honest, tested reviews of SaaS tools, hosting providers,
+      and marketing platforms. Everything you need to grow your online business
+      — reviewed by someone who actually uses them.
+
+  # SEO
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: false
+  ShowRssButtonInSectionTermList: true
+  ShowFullTextinRSS: true
+  ShowToc: true
+  TocOpen: false
+
+  # Social (placeholders)
+  socialIcons:
+    - name: "rss"
+      url: "/index.xml"
+
+  # Google Analytics placeholder
+  googleAnalytics: "UA-XXXXXXXXX-X"
+
+  # Comments placeholder
+  # disqusShortname: "dinnar-reviews"
+
+  assets:
+    favicon: ""
+    favicon16x16: ""
+    favicon32x32: ""
+    apple_touch_icon: ""
+    safari_pinned_tab: ""
+
+menu:
+  main:
+    - name: "Home"
+      url: "/"
+      weight: 1
+    - name: "Reviews"
+      url: "/posts/"
+      weight: 2
+    - name: "About"
+      url: "/about/"
+      weight: 3
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+taxonomies:
+  category: categories
+  tag: tags
