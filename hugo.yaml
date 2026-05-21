@@ -68,3 +68,6 @@ outputs:
 taxonomies:
   category: categories
   tag: tags
+
+# Output to docs/ for GitHub Pages
+publishDir: docs
