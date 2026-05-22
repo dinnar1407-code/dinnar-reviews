@@ -52,7 +52,7 @@ menu:
     - name: "Home"
       url: "/"
       weight: 1
-    - name: "Reviews"
+    - name: "All Reviews"
       url: "/posts/"
       weight: 2
     - name: "About"
