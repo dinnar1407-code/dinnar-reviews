@@ -56,6 +56,14 @@ I wasn't going to write this review without putting real money on the line. Here
 ## Platform Walkthrough
 
 ### Web Platform
+
+Kalshi's main interface is clean and intuitive. Here's what the category view looks like — note the clear navigation across Elections, Politics, Crypto, Climate, and more:
+
+![Kalshi Crypto Markets](/images/kalshi-crypto.png)
+
+And the Election markets page, showing political event contracts:
+
+![Kalshi Election Markets](/images/kalshi-elections.png)
 The web interface is clean and functional. The main dashboard shows featured markets, your positions, and a market list you can filter by category. Order placement is straightforward: choose your side (YES/NO), set contract count and limit price, and submit.
 
 The order book view is serviceable but not as rich as what you'd find on a traditional brokerage. You can see bid/ask spreads, recent trades, and depth — enough to make informed decisions, but market data nerds will want to use the API.

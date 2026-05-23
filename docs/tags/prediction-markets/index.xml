@@ -95,7 +95,11 @@
 <hr>
 <h2 id="platform-walkthrough">Platform Walkthrough</h2>
 <h3 id="web-platform">Web Platform</h3>
-<p>The web interface is clean and functional. The main dashboard shows featured markets, your positions, and a market list you can filter by category. Order placement is straightforward: choose your side (YES/NO), set contract count and limit price, and submit.</p>
+<p>Kalshi&rsquo;s main interface is clean and intuitive. Here&rsquo;s what the category view looks like — note the clear navigation across Elections, Politics, Crypto, Climate, and more:</p>
+<p><img alt="Kalshi Crypto Markets" loading="lazy" src="/images/kalshi-crypto.png"></p>
+<p>And the Election markets page, showing political event contracts:</p>
+<p><img alt="Kalshi Election Markets" loading="lazy" src="/images/kalshi-elections.png">
+The web interface is clean and functional. The main dashboard shows featured markets, your positions, and a market list you can filter by category. Order placement is straightforward: choose your side (YES/NO), set contract count and limit price, and submit.</p>
 <p>The order book view is serviceable but not as rich as what you&rsquo;d find on a traditional brokerage. You can see bid/ask spreads, recent trades, and depth — enough to make informed decisions, but market data nerds will want to use the API.</p>
 <h3 id="mobile-app">Mobile App</h3>
 <p>Kalshi&rsquo;s mobile app (iOS and Android) mirrors the web experience reasonably well. It&rsquo;s useful for checking positions and placing quick orders. The push notification system for event settlements is reliable — I got notified within minutes when a market I was in resolved.</p>
@@ -387,6 +391,10 @@
 <p><strong>總計投入時間：</strong> 大約8-10小時的活躍使用，涵蓋網頁端、行動端和 CLI。</p>
 <hr>
 <h2 id="平台體驗">平台體驗</h2>
+<p>Kalshi 的主介面清晰直觀。以下是分類瀏覽頁面 — 導航欄涵蓋選舉、政治、加密貨幣、氣候等類別：</p>
+<p><img alt="Kalshi 加密貨幣市場" loading="lazy" src="/images/kalshi-crypto.png"></p>
+<p>選舉市場頁面，展示政治事件合約：</p>
+<p><img alt="Kalshi 選舉市場" loading="lazy" src="/images/kalshi-elections.png"></p>
 <h3 id="網頁端">網頁端</h3>
 <p>網頁介面乾淨、功能實用。主儀表板顯示推薦市場、你的持倉以及可按類別篩選的市場列表。下單流程簡單明瞭：選擇方向（YES/NO），設定合約數量和限價，然後提交。</p>
 <p>訂單簿視圖夠用，但不如傳統券商那麼豐富。你可以看到買賣價差、最近成交和深度——足以做出明智的決策，但喜歡看市場數據的重度用戶可能需要用 API。</p>
@@ -680,6 +688,10 @@
 <p><strong>总计投入时间：</strong> 大约8-10小时的活跃使用，涵盖网页端、移动端和 CLI。</p>
 <hr>
 <h2 id="平台体验">平台体验</h2>
+<p>Kalshi 的主界面清晰直观。以下是分类浏览页面 — 涵盖选举、政治、加密货币、气候等类别：</p>
+<p><img alt="Kalshi 加密货币市场" loading="lazy" src="/images/kalshi-crypto.png"></p>
+<p>选举市场页面，展示政治事件合约：</p>
+<p><img alt="Kalshi 选举市场" loading="lazy" src="/images/kalshi-elections.png"></p>
 <h3 id="网页端">网页端</h3>
 <p>网页界面干净、功能实用。主仪表板显示推荐市场、你的持仓以及可按类别筛选的市场列表。下单流程简单明了：选择方向（YES/NO），设定合约数量和限价，然后提交。</p>
 <p>订单簿视图够用，但不如传统券商那么丰富。你可以看到买卖价差、最近成交和深度——足以做出明智的决策，但喜欢看市场数据的重度用户可能需要用 API。</p>
