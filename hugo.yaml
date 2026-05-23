@@ -1,24 +1,49 @@
 baseURL: "https://dinnar.us.com/"
-locale: "en-us"
-title: "Best Tools Review 2026 — Honest SaaS & Hosting Reviews"
 theme: "PaperMod"
-
 enableRobotsTXT: true
+publishDir: docs
+defaultContentLanguage: en
+
+languages:
+  en:
+    label: "English"
+    weight: 1
+    title: "Best Tools Review 2026"
+    params:
+      description: "Honest, tested reviews of SaaS, hosting & prediction market platforms."
+      homeInfoParams:
+        Title: "Best Tools Review 2026"
+        Content: >
+          Honest, tested reviews of SaaS tools, hosting providers, and prediction market platforms.
+          Everything you need to grow online — reviewed by someone who actually uses them.
+
+  zh:
+    label: "简体中文"
+    locale: zh-CN
+    weight: 2
+    title: "最佳工具测评 2026"
+    params:
+      description: "SaaS、主机、预测市场平台的真实测评"
+      homeInfoParams:
+        Title: "最佳工具测评 2026"
+        Content: >
+          SaaS工具、主机服务、预测市场平台的诚实测评。亲身测试，不是纸上谈兵。
+
+  zht:
+    label: "繁體中文"
+    locale: zh-TW
+    weight: 3
+    title: "最佳工具評測 2026"
+    params:
+      description: "SaaS、主機、預測市場平台的真實評測"
+      homeInfoParams:
+        Title: "最佳工具評測 2026"
+        Content: >
+          SaaS工具、主機服務、預測市場平台的誠實評測。親身測試，不是紙上談兵。
 
 params:
   env: production
-  description: "Honest, in-depth reviews of the best SaaS tools, hosting providers, and marketing platforms for entrepreneurs in 2026."
   author: "Dinnar Reviews"
-
-  # Home page
-  homeInfoParams:
-    Title: "Best Tools Review 2026"
-    Content: >
-      🔍 Honest, tested reviews of SaaS tools, hosting providers,
-      and marketing platforms. Everything you need to grow your online business
-      — reviewed by someone who actually uses them.
-
-  # SEO
   ShowReadingTime: true
   ShowShareButtons: true
   ShowPostNavLinks: true
@@ -28,18 +53,11 @@ params:
   ShowFullTextinRSS: true
   ShowToc: true
   TocOpen: false
-
-  # Social (placeholders)
+  ShowLanguageSwitcher: true
   socialIcons:
     - name: "rss"
       url: "/index.xml"
-
-  # Google Analytics placeholder
   googleAnalytics: "UA-XXXXXXXXX-X"
-
-  # Comments placeholder
-  # disqusShortname: "dinnar-reviews"
-
   assets:
     favicon: ""
     favicon16x16: ""
@@ -52,7 +70,7 @@ menu:
     - name: "Home"
       url: "/"
       weight: 1
-    - name: "All Reviews"
+    - name: "Posts"
       url: "/posts/"
       weight: 2
     - name: "About"
@@ -68,6 +86,3 @@ outputs:
 taxonomies:
   category: categories
   tag: tags
-
-# Output to docs/ for GitHub Pages
-publishDir: docs
