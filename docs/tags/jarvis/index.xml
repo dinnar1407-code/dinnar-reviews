@@ -1,4 +1,430 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Jarvis on Best Tools Review 2026</title><link>https://dinnar.us.com/tags/jarvis/</link><description>Recent content in Jarvis on Best Tools Review 2026</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 23 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://dinnar.us.com/tags/jarvis/index.xml" rel="self" type="application/rss+xml"/><item><title>I Let AI Trade Stocks for Me — and Discovered a Brutal Truth</title><link>https://dinnar.us.com/en/posts/jarvis-trading-01-spot-vs-contract/</link><pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate><guid>https://dinnar.us.com/en/posts/jarvis-trading-01-spot-vs-contract/</guid><description>5,000 evolutionary experiments, two fried machines, and one shocking conclusion — the simplest strategy wins.</description><content:encoded><![CDATA[<h2 id="part-1-the-beginning--a-programmers-hubris">Part 1: The Beginning — A Programmer&rsquo;s Hubris</h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Jarvis on Best Tools Review 2026</title><link>https://dinnar.us.com/tags/jarvis/</link><description>Recent content in Jarvis on Best Tools Review 2026</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 23 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://dinnar.us.com/tags/jarvis/index.xml" rel="self" type="application/rss+xml"/><item><title>Environment Setup Weeded Out 90% of Traders — I Fixed It With One Command</title><link>https://dinnar.us.com/en/posts/jarvis-trading-02-env-setup/</link><pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate><guid>https://dinnar.us.com/en/posts/jarvis-trading-02-env-setup/</guid><description>Python dependency hell, Docker misconfigurations, Nginx reverse proxy — the real barrier to algo trading isn&amp;#39;t strategy, it&amp;#39;s environment. Here&amp;#39;s how one Claude Code prompt solves it all.</description><content:encoded><![CDATA[<h2 id="part-1-the-comment-that-hit-home">Part 1: The Comment That Hit Home</h2>
+<p>After publishing Part 1 — &ldquo;I Let AI Trade Stocks for Me, and Discovered a Brutal Truth&rdquo; — one reader comment stood out:</p>
+<blockquote>
+<p>&ldquo;Great article. I understand the code. But I spent two days trying to install Python dependencies and gave up.&rdquo;</p>
+</blockquote>
+<p>This wasn&rsquo;t an outlier. Here&rsquo;s what the data showed:</p>
+<ul>
+<li>Article reads: 3,800</li>
+<li>Bookmarks and shares: 460</li>
+<li>Readers who actually started setting up: ~20 (privately contacted)</li>
+<li><strong>Readers who got past environment setup: 1</strong></li>
+</ul>
+<p>Data doesn&rsquo;t lie. <strong>The #1 barrier to algorithmic trading isn&rsquo;t strategy — it&rsquo;s environment setup.</strong></p>
+<p>Python dependency conflicts. Docker networking issues. API key management. These zero-value-add activities consume 95% of your motivation before you write a single line of trading logic.</p>
+<p>Part 2 exists to solve this. Not by teaching you step-by-step — but by giving you a prompt you can copy-paste <strong>right now</strong> and have AI do everything.</p>
+<hr>
+<h2 id="part-2-my-personal-environment-hell--an-afternoon-wasted">Part 2: My Personal &ldquo;Environment Hell&rdquo; — An Afternoon Wasted</h2>
+<p>Raw timestamp log from my first attempt at quant trading, early 2024:</p>
+<pre tabindex="0"><code>2:00 PM — pip install ccxt. Error: numpy version conflict.
+2:20 PM — Created virtualenv. Re-installing everything.
+2:40 PM — Ran first script. Error: pandas 2.0 removed .append().
+3:00 PM — Downgraded pandas. Broke three other packages.
+3:30 PM — Gave up on virtualenv. Switched to conda.
+4:00 PM — conda install ta-lib requires brew-installed C library. brew update took 20 minutes.
+4:30 PM — ta-lib finally installed. 
+4:45 PM — Ran backtest. Error: Python 3.12 incompatible.
+5:00 PM — Closed laptop. Went to a bar.
+</code></pre><p>True story. I didn&rsquo;t touch trading code for two months after that day.</p>
+<p>Setting up a development environment is like moving apartments. You want to start <em>living</em> in the new place, but first you have to deal with utilities, furniture assembly, and paperwork. 99% of people quit by step 3.</p>
+<p>In the AI era, this problem has a different solution.</p>
+<hr>
+<h2 id="part-3-the-new-workflow--one-command-everything-done">Part 3: The New Workflow — One Command, Everything Done</h2>
+<p>Here&rsquo;s my current workflow:</p>
+<ol>
+<li>Open OpenClaw</li>
+<li>Paste a Claude Code prompt (included at the bottom of this article)</li>
+<li>Grab a coffee</li>
+<li>Come back — <strong>environment is ready, demo code is running</strong></li>
+</ol>
+<p>I tested this yesterday on a fresh Mac mini. Timed every step:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Step</th>
+          <th style="text-align: left">Time</th>
+          <th style="text-align: left">Notes</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Claude Code analyzes requirements</td>
+          <td style="text-align: left">18 sec</td>
+          <td style="text-align: left">Auto-detects macOS, checks installed packages</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Install Python dependencies</td>
+          <td style="text-align: left">3 min 42 sec</td>
+          <td style="text-align: left">27 packages, zero conflicts</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Docker Compose deployment</td>
+          <td style="text-align: left">4 min 15 sec</td>
+          <td style="text-align: left">Pulls images, starts PG/Redis/Grafana</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Project skeleton creation</td>
+          <td style="text-align: left">12 sec</td>
+          <td style="text-align: left">7 directories + config files</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Data collector demo run</td>
+          <td style="text-align: left">1 min 20 sec</td>
+          <td style="text-align: left">Connects Kraken API, writes to Redis</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Total</strong></td>
+          <td style="text-align: left"><strong>~10 min</strong></td>
+          <td style="text-align: left">From blank machine to working demo</td>
+      </tr>
+  </tbody>
+</table>
+<p>Compared to my 6-hour failure in 2024 — that&rsquo;s a <strong>36× efficiency improvement</strong>.</p>
+<hr>
+<h2 id="part-4-the-jarvis-docker-compose-architecture">Part 4: The Jarvis Docker Compose Architecture</h2>
+<p>Here&rsquo;s what we&rsquo;re deploying:</p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────┐
+│              Docker Compose                 │
+│                                             │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
+│  │PostgreSQL│  │  Redis   │  │ Grafana  │  │
+│  │  :5432   │  │  :6379   │  │  :3000   │  │
+│  │ OHLCV+   │  │ Real-time│  │ Dashboard│  │
+│  │ trades   │  │ cache    │  │          │  │
+│  └──────────┘  └──────────┘  └──────────┘  │
+│                                             │
+│  ┌──────────────────────────────────────┐   │
+│  │        Python Trading Engine         │   │
+│  │  collector.py → strategy.py → exec   │   │
+│  └──────────────────────────────────────┘   │
+│                                             │
+│  ┌──────────────────────────────────────┐   │
+│  │        OpenClaw Cron                 │   │
+│  │       Every 5 minutes                │   │
+│  └──────────────────────────────────────┘   │
+└─────────────────────────────────────────────┘
+</code></pre><p><strong>Why these three:</strong></p>
+<ul>
+<li><strong>PostgreSQL</strong> — Stores OHLCV history and trades. Better than MySQL for time-series queries. TimescaleDB extension ready for future scale. Every candlestick, every trade lives here.</li>
+<li><strong>Redis</strong> — Caches real-time tickers. BTC price changes multiple times per second. You can&rsquo;t hit the database for every tick. Redis does in-memory reads at sub-millisecond latency.</li>
+<li><strong>Grafana</strong> — Visual monitoring. Don&rsquo;t stare at terminal numbers. A dashboard: equity curve, position distribution, risk exposure — all at a glance.</li>
+</ul>
+<p><strong>Why not SQLite:</strong>
+It&rsquo;s fine for a local demo. But I designed Jarvis from day one for production scale. The data volume, concurrency, and availability requirements of live trading exceed SQLite&rsquo;s capacity. Start with PostgreSQL and never migrate.</p>
+<hr>
+<h2 id="part-5-live-demo--from-zero-to-first-running-script">Part 5: Live Demo — From Zero to First Running Script</h2>
+<p>Here&rsquo;s the terminal transcript of what AI does. (GIF screencast coming soon.)</p>
+<p><strong>(Screenshot 1: Terminal — initial state, no Python, no Docker containers)</strong></p>
+<pre tabindex="0"><code>$ python3 --version
+zsh: command not found: python3
+</code></pre><p><strong>(Screenshot 2: Claude Code starts working)</strong></p>
+<pre tabindex="0"><code>🔍 Detecting system environment...
+  ✅ macOS 15.x (Darwin arm64)
+  ⚠️ Python3 not found → Installing...
+  ⚠️ Docker not found → Skipping (assume installed)
+  ✅ Homebrew installed
+</code></pre><p>Dependency installation:</p>
+<pre tabindex="0"><code>📦 Installing Python dependencies...
+  ✅ numpy==1.26.4
+  ✅ pandas==2.2.3
+  ✅ ccxt==4.4.29
+  ✅ redis==5.2.1
+  ✅ psycopg2-binary==2.9.10
+  ✅ python-dotenv==1.0.1
+  ...all 27 packages installed successfully
+</code></pre><p><strong>(Screenshot 3: Docker Compose up)</strong></p>
+<pre tabindex="0"><code>🐳 Starting Docker Compose...
+  [+] Running 3/3
+   ✔ Container jarvis-postgres  Started
+   ✔ Container jarvis-redis     Started
+   ✔ Container jarvis-grafana   Started
+</code></pre><p><strong>(Screenshot 4: Project skeleton in VS Code)</strong></p>
+<pre tabindex="0"><code>jarvis-trading/
+├── docker-compose.yml
+├── .env
+├── requirements.txt
+├── README.md
+├── src/
+│   ├── __init__.py
+│   ├── data/
+│   │   ├── __init__.py
+│   │   └── collector.py
+│   ├── strategy/
+│   │   └── __init__.py
+│   ├── execution/
+│   │   └── __init__.py
+│   ├── risk/
+│   │   └── __init__.py
+│   └── notify/
+│       └── __init__.py
+├── config/
+│   └── settings.py
+└── tests/
+    └── __init__.py
+</code></pre><p><strong>(Screenshot 5: First data collection run)</strong></p>
+<pre tabindex="0"><code>$ python src/data/collector.py
+🔄 [21:35:00] Collecting market data...
+  📈 BTC/USD: $97,231.40 (+2.14% 24h) → Redis OK
+  📈 ETH/USD: $3,847.20 (+1.87% 24h) → Redis OK
+✅ Collection complete (2026-05-23 21:35:00 PDT)
+</code></pre><hr>
+<h2 id="part-6-core-code-walkthrough--collectorpy">Part 6: Core Code Walkthrough — collector.py</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jarvis Data Collector — collector.py
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Connects to Kraken public API, fetches BTC/ETH real-time tickers,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">stores them in Redis cache.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Usage:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    python src/data/collector.py
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    # Or via cron every 5 minutes
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Dependencies:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    ccxt, redis, python-dotenv
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> redis
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> ccxt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> dotenv <span style="color:#f92672">import</span> load_dotenv
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>load_dotenv()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ── Config ──────────────────────────────────</span>
+</span></span><span style="display:flex;"><span>REDIS_HOST <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;REDIS_HOST&#34;</span>, <span style="color:#e6db74">&#34;localhost&#34;</span>)
+</span></span><span style="display:flex;"><span>REDIS_PORT <span style="color:#f92672">=</span> int(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;REDIS_PORT&#34;</span>, <span style="color:#ae81ff">6379</span>))
+</span></span><span style="display:flex;"><span>SYMBOLS <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;BTC/USD&#34;</span>, <span style="color:#e6db74">&#34;ETH/USD&#34;</span>]      <span style="color:#75715e"># Monitored pairs</span>
+</span></span><span style="display:flex;"><span>REDIS_TTL <span style="color:#f92672">=</span> <span style="color:#ae81ff">300</span>                        <span style="color:#75715e"># 5-minute cache expiry</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ── Connections ──────────────────────────────</span>
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> redis<span style="color:#f92672">.</span>Redis(host<span style="color:#f92672">=</span>REDIS_HOST, port<span style="color:#f92672">=</span>REDIS_PORT, decode_responses<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>exchange <span style="color:#f92672">=</span> ccxt<span style="color:#f92672">.</span>kraken({<span style="color:#e6db74">&#34;enableRateLimit&#34;</span>: <span style="color:#66d9ef">True</span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">collect_ticker</span>(symbol: str) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Fetch real-time ticker for a single trading pair&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    ticker <span style="color:#f92672">=</span> exchange<span style="color:#f92672">.</span>fetch_ticker(symbol)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;symbol&#34;</span>: symbol,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;last&#34;</span>: ticker[<span style="color:#e6db74">&#34;last&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;bid&#34;</span>: ticker[<span style="color:#e6db74">&#34;bid&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;ask&#34;</span>: ticker[<span style="color:#e6db74">&#34;ask&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;volume_24h&#34;</span>: ticker[<span style="color:#e6db74">&#34;baseVolume&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;change_24h&#34;</span>: ticker[<span style="color:#e6db74">&#34;percentage&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>isoformat(),
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Main loop: iterate symbols, fetch prices, write to Redis&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;🔄 [</span><span style="color:#e6db74">{</span>datetime<span style="color:#f92672">.</span>now()<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%H:%M:%S&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">] Collecting market data...&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> symbol <span style="color:#f92672">in</span> SYMBOLS:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>            data <span style="color:#f92672">=</span> collect_ticker(symbol)
+</span></span><span style="display:flex;"><span>            key <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;ticker:</span><span style="color:#e6db74">{</span>symbol<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#39;/&#39;</span>, <span style="color:#e6db74">&#39;_&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>            r<span style="color:#f92672">.</span>setex(key, REDIS_TTL, json<span style="color:#f92672">.</span>dumps(data))
+</span></span><span style="display:flex;"><span>            change <span style="color:#f92672">=</span> data[<span style="color:#e6db74">&#34;change_24h&#34;</span>]
+</span></span><span style="display:flex;"><span>            emoji <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;📈&#34;</span> <span style="color:#66d9ef">if</span> (change <span style="color:#f92672">or</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;📉&#34;</span>
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  </span><span style="color:#e6db74">{</span>emoji<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>symbol<span style="color:#e6db74">}</span><span style="color:#e6db74">: $</span><span style="color:#e6db74">{</span>data[<span style="color:#e6db74">&#39;last&#39;</span>]<span style="color:#e6db74">:</span><span style="color:#e6db74">,.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> &#34;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;(</span><span style="color:#e6db74">{</span>change<span style="color:#e6db74">:</span><span style="color:#e6db74">+.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">% 24h) → Redis OK&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;  ❌ </span><span style="color:#e6db74">{</span>symbol<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;✅ Collection complete (</span><span style="color:#e6db74">{</span>datetime<span style="color:#f92672">.</span>now()<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S %Z&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p><strong>Key design decisions:</strong></p>
+<ol>
+<li><strong>ccxt</strong> — One library, 120+ exchanges. Today it&rsquo;s Kraken. Tomorrow add Binance/Coinbase by changing one line to <code>ccxt.binance()</code>.</li>
+<li><strong>Redis TTL=300</strong> — Prices auto-expire after 5 minutes. Fresh data guaranteed, no memory bloat.</li>
+<li><strong>Structured JSON</strong> — Every ticker stored as JSON. Grafana reads Redis directly for real-time dashboards.</li>
+</ol>
+<hr>
+<h2 id="part-7-openclaw-cron--true-automation">Part 7: OpenClaw Cron — True Automation</h2>
+<p>Writing code is one thing. Running it automatically is another.</p>
+<p>Configure an OpenClaw cron job so Caishen triggers data collection every 5 minutes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># OpenClaw Cron Configuration</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;Jarvis Market Data Collector&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">description</span>: <span style="color:#e6db74">&#34;Fetches BTC/ETH real-time prices from Kraken every 5 minutes&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">schedule</span>: <span style="color:#e6db74">&#34;*/5 * * * *&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">command</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    cd /Users/wheat/jarvis-trading
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    source venv/bin/activate
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    python src/data/collector.py</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">working_dir</span>: <span style="color:#e6db74">&#34;/Users/wheat/jarvis-trading&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">notify_on_error</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">error_message</span>: <span style="color:#e6db74">&#34;⚠️ Jarvis data collection failed — check logs&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">log_retention</span>: <span style="color:#e6db74">&#34;7d&#34;</span>
+</span></span></code></pre></div><p><strong>OpenClaw cron advantages:</strong></p>
+<ul>
+<li><strong>Native support</strong> — No crontab or launchd config needed</li>
+<li><strong>Error notifications</strong> — Failed runs push alerts to Telegram automatically</li>
+<li><strong>Log retention</strong> — Every run logged, easy to debug historical failures</li>
+</ul>
+<hr>
+<h2 id="part-8-common-pitfalls-and-fixes">Part 8: Common Pitfalls and Fixes</h2>
+<p>After helping readers set up their environments, here are the top 5 issues:</p>
+<h3 id="pitfall-1-ccxt-exchangenotavailable-error">Pitfall #1: ccxt &ldquo;ExchangeNotAvailable&rdquo; Error</h3>
+<pre tabindex="0"><code>Cause: Kraken API rate limiting
+Fix: exchange = ccxt.kraken({&#34;enableRateLimit&#34;: True})
+</code></pre><p>One parameter. ccxt auto-throttles requests. No more rate limits.</p>
+<h3 id="pitfall-2-docker-compose-port-conflicts">Pitfall #2: Docker Compose Port Conflicts</h3>
+<pre tabindex="0"><code>Cause: Ports 5432/6379/3000 already in use
+Fix: Override in .env:
+  PG_PORT=5433
+  REDIS_PORT=6380
+  GRAFANA_PORT=3001
+</code></pre><h3 id="pitfall-3-apple-silicon-postgresql-image-fails">Pitfall #3: Apple Silicon PostgreSQL Image Fails</h3>
+<pre tabindex="0"><code>Cause: Pulled amd64 image on arm64
+Fix: Add platform: linux/arm64 to docker-compose.yml
+</code></pre><h3 id="pitfall-4-pip-install-ssl-certificate-error">Pitfall #4: pip install SSL Certificate Error</h3>
+<pre tabindex="0"><code>Cause: Corporate proxy/VPN interception
+Fix: pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org &lt;package&gt;
+</code></pre><h3 id="pitfall-5-redisexceptionsconnectionerror">Pitfall #5: redis.exceptions.ConnectionError</h3>
+<pre tabindex="0"><code>Cause: Redis not running or wrong host config
+Fix: docker compose up -d first, then docker compose ps to verify
+</code></pre><hr>
+<h2 id="part-9-the-takeaway--ai-changed-how-we-start">Part 9: The Takeaway — AI Changed How We &ldquo;Start&rdquo;</h2>
+<p><strong>Traditional learning path:</strong></p>
+<pre tabindex="0"><code>Read books (1 week) → Install dependencies (1 day) → Configure env vars (2 hours)
+→ Run Hello World (30 min) → Troubleshoot (3 days) → Give up (∞)
+</code></pre><p><strong>AI-assisted path:</strong></p>
+<pre tabindex="0"><code>Copy prompt (10 seconds) → Let AI work (10 minutes) → Demo running (0 seconds)
+→ Start writing strategies
+</code></pre><p>Where&rsquo;s the difference? <strong>Traditional paths spend 90% of time on things that have nothing to do with your actual goal.</strong></p>
+<p>Environment setup, dependency installation, config files — these are not your competitive advantage. Your advantage is designing trading logic, architecting strategy frameworks, discovering market inefficiencies.</p>
+<p>Offload the grunt work to AI. You focus on answering one question: <em>&ldquo;Where&rsquo;s the alpha?&rdquo;</em></p>
+<hr>
+<h2 id="appendix-complete-claude-code-prompt">Appendix: Complete Claude Code Prompt</h2>
+<p>Copy the following into Claude Code. AI handles everything from Part 2:</p>
+<pre tabindex="0"><code>You are the developer of Jarvis Trading System.
+
+Task: Set up the complete development environment for Jarvis Trading System
+on a Mac mini (macOS, Apple Silicon).
+
+## Requirements
+
+### 1. Python Environment
+- Check if Python3 is installed; install via Homebrew if missing
+- Create a virtual environment (venv)
+- Install these dependencies:
+  - ccxt (unified exchange API)
+  - pandas, numpy (data processing)
+  - redis (cache client)
+  - psycopg2-binary (PostgreSQL adapter)
+  - python-dotenv (environment variable management)
+  - schedule (task scheduling)
+  - requests, websocket-client (networking)
+  - matplotlib, plotly (visualization)
+  - pytest (testing)
+- Generate requirements.txt
+
+### 2. Docker Compose Deployment
+Create docker-compose.yml with three services:
+
+**PostgreSQL 16:**
+- Port: 5432
+- Environment: POSTGRES_USER=jarvis, POSTGRES_PASSWORD from env, POSTGRES_DB=jarvis
+- Persistent volume: pgdata
+- platform: linux/arm64
+
+**Redis 7:**
+- Port: 6379
+- Persistent volume: redisdata
+- AOF persistence enabled
+- platform: linux/arm64
+
+**Grafana:**
+- Port: 3000
+- Environment: GF_SECURITY_ADMIN_PASSWORD from env
+- Persistent volume: grafanadata
+
+### 3. Project Skeleton
+Create this directory structure:
+jarvis-trading/
+├── docker-compose.yml
+├── .env (environment template)
+├── requirements.txt
+├── README.md
+├── src/
+│   ├── __init__.py
+│   ├── data/
+│   │   ├── __init__.py
+│   │   └── collector.py
+│   ├── strategy/
+│   │   └── __init__.py
+│   ├── execution/
+│   │   └── __init__.py
+│   ├── risk/
+│   │   └── __init__.py
+│   └── notify/
+│       └── __init__.py
+├── config/
+│   └── settings.py
+└── tests/
+    └── __init__.py
+
+### 4. Data Collector (collector.py)
+- Use ccxt to connect to Kraken public API (no API key required)
+- Set enableRateLimit: True
+- Fetch BTC/USD and ETH/USD real-time ticker data
+- Extract: last, bid, ask, baseVolume, percentage
+- Store in Redis: key = ticker:BTC_USD, value = JSON, TTL = 300s
+- Read REDIS_HOST and REDIS_PORT from .env
+- Run via: python src/data/collector.py
+- Output formatted log with timestamp and 24h change emoji
+
+### 5. OpenClaw Cron Configuration
+Create an OpenClaw cron config fragment that:
+- Runs collector.py every 5 minutes
+- Sends Telegram notification on failure
+- Retains logs for 7 days
+
+## Execution Order
+1. Check system environment (OS, arch, Python, Docker, Homebrew)
+2. Install missing dependencies
+3. Create Python venv and install packages
+4. Generate docker-compose.yml
+5. Start Docker Compose services
+6. Create project skeleton directories
+7. Write all source code files
+8. Write config files (.env, settings.py, .gitignore)
+9. Initialize Git repository
+10. Run collector.py to verify
+
+Report results after each step. If errors, diagnose and fix.
+
+## Notes
+- All Docker images must specify platform: linux/arm64 (Apple Silicon)
+- Sensitive values (passwords) go in .env, never hardcoded
+- Code comments in English (or Chinese if preferred), variable names in English
+- .env must be in .gitignore
+</code></pre><hr>
+<h2 id="coming-up-part-3">Coming Up: Part 3</h2>
+<p><strong>&ldquo;Free APIs + AI = Your Personal Bloomberg Terminal&rdquo;</strong></p>
+<p>We&rsquo;ll cover:</p>
+<ul>
+<li>Connecting ccxt to 5 exchanges (Kraken/Coinbase/Binance/OKX/Bybit)</li>
+<li>Real-time WebSocket price streaming</li>
+<li>AI-powered spread anomaly detection</li>
+<li>Building a live trading dashboard in Grafana</li>
+</ul>
+<p><strong>Follow the series. Don&rsquo;t miss it.</strong></p>
+<hr>
+<p><em>This series is based on &ldquo;Cola AI Lab&rdquo; quantitative trading research. All code is open source. Data comes from public APIs. Nothing in this article constitutes investment advice.</em></p>
+<hr>
+<blockquote>
+<p>💬 Got your environment running? Hit a snag? Drop a comment — I read and respond to every one.</p>
+</blockquote>
+<p><strong>Series Index:</strong></p>
+<ol>
+<li>✅ Spot vs. Contract: The Hidden Math</li>
+<li>✅ <strong>[This Issue]</strong> One-Command Environment Setup</li>
+<li>🔜 Free APIs + AI = Your Personal Bloomberg Terminal</li>
+<li>🔜 Trading Strategies Aren&rsquo;t Born From Gut Feelings</li>
+<li>🔜 Backtests That Look Amazing, Live Trades That Don&rsquo;t</li>
+</ol>
+]]></content:encoded></item><item><title>I Let AI Trade Stocks for Me — and Discovered a Brutal Truth</title><link>https://dinnar.us.com/en/posts/jarvis-trading-01-spot-vs-contract/</link><pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate><guid>https://dinnar.us.com/en/posts/jarvis-trading-01-spot-vs-contract/</guid><description>5,000 evolutionary experiments, two fried machines, and one shocking conclusion — the simplest strategy wins.</description><content:encoded><![CDATA[<h2 id="part-1-the-beginning--a-programmers-hubris">Part 1: The Beginning — A Programmer&rsquo;s Hubris</h2>
 <p>Spring 2025. I did what every engineer does — decided I could conquer the financial markets with code.</p>
 <p>I had AI. I had data. I had drive.</p>
 <p>&ldquo;Wall Street is still using Excel spreadsheets, and I&rsquo;m armed with deep reinforcement learning, Transformers, and LSTMs. This is a steamroll.&rdquo;</p>
