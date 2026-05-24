@@ -2,7 +2,7 @@
 title: "Vibe Coding My Stop-Loss Cost Me a Month's Profit"
 subtitle: "Five Pitfalls of Automated Risk Management — and How Jarvis Survived Them"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis"]
 categories: ["jarvis-trading-series"]
 description: "Sigmoid exits, soft stop-losses, greedy take-profits — I lost $1,200 in four days of automated trading. Here's every mistake and the risk control module that fixed them."

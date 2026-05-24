@@ -2,7 +2,7 @@
 title: "Every Morning I Wake Up to an AI-Written Trading Report"
 subtitle: "Jarvis + Obsidian Automated Daily P&L, Position Tracking, and Fibonacci Updates"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis"]
 categories: ["jarvis-trading-series"]
 description: "A 30-second daily digest that audits all exchange balances, tracks position changes, generates market commentary, and updates Fibonacci levels — all while you sleep."

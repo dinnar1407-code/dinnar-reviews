@@ -2,7 +2,7 @@
 title: "Trading Strategies Aren't Gut Feelings — From Intuition to PRD"
 subtitle: "A Four-Step Pipeline to Turn Your 'I Feel' Into Mathematical Proof"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis", "strategy", "PRD"]
 categories: ["jarvis-trading-series"]
 description: "How to transform a raw trading intuition into a mathematically rigorous, machine-readable PRD using Gemini Deep Research, NotebookLM, and AI multi-agent roundtables — then hand it to Claude Code for execution."

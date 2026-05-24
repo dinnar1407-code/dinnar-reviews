@@ -2,7 +2,7 @@
 title: "Environment Setup Weeded Out 90% of Traders — I Fixed It With One Command"
 subtitle: "AI-Powered DevOps for Your Quant Trading System"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis", "devops"]
 categories: ["jarvis-trading-series"]
 description: "Python dependency hell, Docker misconfigurations, Nginx reverse proxy — the real barrier to algo trading isn't strategy, it's environment. Here's how one Claude Code prompt solves it all."

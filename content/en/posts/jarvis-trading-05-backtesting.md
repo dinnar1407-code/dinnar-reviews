@@ -2,7 +2,7 @@
 title: "Backtests That Look Perfect, Live Accounts That Bleed — Why 90% Die Here"
 subtitle: "Taylor Expansion Reveals the Overfitting Traps That Kill Your Strategy"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis", "backtesting", "overfitting"]
 categories: ["jarvis-trading-series"]
 description: "Why does your 462% annualized backtest go to zero in three weeks of live trading? Taylor expansion reveals three noise traps — and Jarvis's automated overfitting detector catches them before you lose money."

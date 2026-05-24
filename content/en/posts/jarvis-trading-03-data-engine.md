@@ -2,7 +2,7 @@
 title: "Free APIs + AI = Your Personal Bloomberg Terminal"
 subtitle: "Building a Multi-Exchange Data Engine With Zero Cost"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis", "data-engineering"]
 categories: ["jarvis-trading-series"]
 description: "How I built a real-time multi-exchange data engine using Kraken/Coinbase free APIs, Redis caching, PostgreSQL storage, OpenClaw Cron, and automatic Obsidian market snapshots — all for $0."

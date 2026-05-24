@@ -2,7 +2,7 @@
 title: "Making Money While You Sleep — Jarvis Full Automation Goes Live"
 subtitle: "Connecting All 7 Modules Into a 24/7 Unattended Trading System"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis"]
 categories: ["jarvis-trading-series"]
 description: "OpenClaw cron scheduling, automated order execution, real-time risk control, Telegram notifications — every module from the first seven episodes wired together into a system that trades while you sleep."

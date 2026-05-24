@@ -2,7 +2,7 @@
 title: "Jarvis Isn't Just a Trading Tool — I Turned It Into My COO"
 subtitle: "Multi-Agent Coordination, Capability Boundaries, and the Road Ahead"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis"]
 categories: ["jarvis-trading-series"]
 description: "From a single trading agent to a 4-agent operations system — how Jarvis evolved into my first silicon-based employee, handling product analysis, competitor monitoring, and project management."

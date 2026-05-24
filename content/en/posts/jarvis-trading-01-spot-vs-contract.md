@@ -2,7 +2,7 @@
 title: "I Let AI Trade Stocks for Me — and Discovered a Brutal Truth"
 subtitle: "The Mathematical Logic Behind Spot vs. Contract Trading"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis"]
 categories: ["jarvis-trading-series"]
 description: "5,000 evolutionary experiments, two fried machines, and one shocking conclusion — the simplest strategy wins."

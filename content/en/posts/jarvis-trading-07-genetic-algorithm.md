@@ -2,7 +2,7 @@
 title: "Copying DeepSeek's Core Logic — I Rewrote My Trading Strategy With Evolution"
 subtitle: "Why 10,000 Lines of Code Lost to 30 Lines of Minimal Parameters"
 date: 2026-05-23
-draft: false
+draft: true
 tags: ["trading", "AI", "quant", "jarvis"]
 categories: ["jarvis-trading-series"]
 description: "DeepSeek's philosophy applied to trading: don't teach AI how to think. Define a reward function and let compute power do the rest. Here's how a genetic algorithm in Go found a strategy no human would have imagined."
