@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>PRD on Best Tools Review 2026</title><link>https://dinnar.us.com/tags/prd/</link><description>Recent content in PRD on Best Tools Review 2026</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 23 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://dinnar.us.com/tags/prd/index.xml" rel="self" type="application/rss+xml"/><item><title>Trading Strategies Aren't Gut Feelings — From Intuition to PRD</title><link>https://dinnar.us.com/en/posts/jarvis-trading-04-strategy-prd/</link><pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate><guid>https://dinnar.us.com/en/posts/jarvis-trading-04-strategy-prd/</guid><description>How to transform a raw trading intuition into a mathematically rigorous, machine-readable PRD using Gemini Deep Research, NotebookLM, and AI multi-agent roundtables — then hand it to Claude Code for execution.</description><content:encoded><![CDATA[<h2 id="part-1-where-99-of-traders-die">Part 1: Where 99% of Traders Die</h2>
+<p>Here&rsquo;s a sample of the messages I get:</p>
+<blockquote>
+<p>&ldquo;Dude, I <em>feel</em> like BTC is about to pump. Should I chase?&rdquo;</p>
+<p>&ldquo;ETH is bouncing off the 20-day MA. <em>Looks like</em> a dip-buying opportunity?&rdquo;</p>
+<p>&ldquo;Some KOL said SOL is crashing. I shorted. Got liquidated&hellip;&rdquo;</p>
+</blockquote>
+<p>They all share one trait: <strong>Every decision is based on &ldquo;I feel.&rdquo;</strong></p>
+<p>&ldquo;I feel,&rdquo; &ldquo;I think,&rdquo; &ldquo;someone said&rdquo; — in quantitative finance, these phrases have a formal academic name:</p>
+<p><strong>Noise.</strong></p>
+<p>Yes — the exact same high-order noise term from Part 3&rsquo;s Taylor expansion. Your &ldquo;gut feeling&rdquo; is mathematically equivalent to the discarded ε (error term) that wrecks your backtest.</p>
+<p>But here&rsquo;s the real question: if gut feelings are useless, where do strategies actually come from?</p>
+<p>That&rsquo;s what Part 4 is about. A complete pipeline to <strong>translate intuition into mathematics, and mathematics into code.</strong></p>
+<hr>
+<h2 id="part-2-the-four-step-pipeline--intuition-to-prd">Part 2: The Four-Step Pipeline — Intuition to PRD</h2>
+<p>Here&rsquo;s the full process:</p>
+<pre tabindex="0"><code>                    ┌──────────────┐
+                    │ ①Raw Intuition │
+                    │ &#34;I think shorting│
+                    │  pumped altcoins │
+                    │  could work&#34;      │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │ ②Deep Research │
+                    │ Search academic │
+                    │ literature for   │
+                    │ quant models     │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │ ③NotebookLM   │
+                    │ Knowledge synth │
+                    │ + AI roundtable  │
+                    │ discussion       │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │ ④PRD Document │
+                    │ Machine-readable│
+                    │ spec → Claude   │
+                    │ Code executes    │
+                    └──────────────┘
+</code></pre><hr>
+<h3 id="step-1-describe-your-intuition-in-natural-language">Step 1: Describe Your Intuition in Natural Language</h3>
+<p>I&rsquo;ll use a real case from Cola AI Lab video #6.</p>
+<p>A friend of Cola&rsquo;s had a high-win-rate shorting strategy. The core intuition:</p>
+<blockquote>
+<p>&ldquo;Find altcoins that pumped insanely in the short term. Once their momentum dies, open a low-leverage short. The underlying philosophy: all altcoins trend toward zero.&rdquo;</p>
+</blockquote>
+<p>Good intuition? Yes. It has a clear <strong>trading logic</strong> (mean reversion) and an <strong>underlying thesis</strong> (zero-convergence hypothesis).</p>
+<p>But also bad. It doesn&rsquo;t answer:</p>
+<ul>
+<li>&ldquo;How much is &lsquo;pumped insanely&rsquo;?&rdquo; — no quantitative threshold</li>
+<li>&ldquo;How do you define &lsquo;momentum dying&rsquo;?&rdquo; — no technical indicator</li>
+<li>&ldquo;How much is &rsquo;low leverage&rsquo;?&rdquo; — no position sizing</li>
+<li>&ldquo;When do you exit?&rdquo; — no exit conditions</li>
+</ul>
+<p><strong>These four sentences can make money — luck money. Quant converts it to certainty money.</strong></p>
+<p>Feed the intuition to an AI assistant for initial decomposition:</p>
+<pre tabindex="0"><code>Me: I need to build a quant strategy. The idea: find altcoins that have
+pumped extremely in the short term. When their momentum dies, open a
+low-leverage short. Philosophy: all altcoins trend toward zero.
+
+AI:
+This is a &#34;shorting bubble mean-reversion strategy.&#34;
+
+Mathematical Engine — Quantifying momentum exhaustion:
+1. Pump threshold: &gt;X% gain in past 3 or 7 days
+2. Momentum exhaustion triggers (right-side entry, never short during pump):
+   - Volume-price divergence: price at new highs but volume shrinking
+   - Derivatives data: extremely positive funding rate + declining OI growth
+
+Risk Layer:
+3. Leverage × stop-loss mathematical coupling
+4. Maximum acceptable loss per trade
+</code></pre><p>One sentence of intuition, decomposed into <strong>actionable technical dimensions</strong>. But not yet precise enough. Next step: Deep Research.</p>
+<hr>
+<h3 id="step-2-deep-research--mining-academic-quant-models">Step 2: Deep Research — Mining Academic Quant Models</h3>
+<p>This is the most critical step. You&rsquo;re not asking AI to make up indicators. You&rsquo;re asking it to pull <strong>real quant models from academic finance literature</strong>.</p>
+<p>Prompt:</p>
+<pre tabindex="0"><code>Below is my trading strategy framework. From mathematical and financial
+perspectives, search academic literature for quant models to validate
+and refine this strategy:
+
+Core strategy: Short recently-pumped altcoins, betting on mean reversion
+to zero. Underlying philosophy: exponential decay + Log-Periodic Power Law
+(LPPL) model.
+
+Specific requests:
+1. Search mean-reversion strategy academic literature for best quant metrics
+2. Search LPPL model applications in financial bubble prediction
+3. Analyze mathematical definition of volume-price divergence — specifically
+   the derivative-angle method within the same time window
+4. Find academic support for funding rate as a short signal
+5. Provide complete mathematical model formulas
+</code></pre><p>Deep Research spent about 3 minutes pulling from Google Scholar, arXiv, and SSRN.</p>
+<p><strong>Key findings:</strong></p>
+<ol>
+<li><strong>LPPL Model (Log-Periodic Power Law)</strong> — the bubble prediction model by Didier Sornette (ETH Zurich):</li>
+</ol>
+<pre tabindex="0"><code>ln(p(t)) ≈ A + B(t_c - t)^m × [1 + C cos(ω ln(t_c - t) + φ)]
+</code></pre><p>Where:</p>
+<ul>
+<li><code>t_c</code> = critical (crash) time</li>
+<li><code>m</code> = power law exponent (0 &lt; m &lt; 1; closer to 0 = more like exponential blowoff)</li>
+<li><code>C</code> = log-periodic oscillation amplitude</li>
+<li><code>ω</code> = log-angular frequency</li>
+</ul>
+<p>Before a bubble crashes, prices exhibit accelerating oscillations (log-periodic fluctuations) — the optimal short signal.</p>
+<ol start="2">
+<li><strong>Volume-price divergence — derivative-angle method</strong>:</li>
+</ol>
+<pre tabindex="0"><code>Divergence = arctan(V&#39;(t) / P&#39;(t))
+</code></pre><p>When price hits new highs but volume growth stalls, <code>V'(t)</code> → 0 while <code>P'(t)</code> remains positive. <code>arctan(0/P')</code> → 0°, near-zero angle = divergence. During healthy rallies, volume and price move together, producing larger angles.</p>
+<ol start="3">
+<li><strong>Funding rate + Open Interest</strong> — persistently positive funding rate with stagnant OI growth signals crowded longs without fresh capital, a textbook short setup.</li>
+</ol>
+<hr>
+<h3 id="step-3-notebooklm-synthesis--ai-multi-agent-roundtable">Step 3: NotebookLM Synthesis + AI Multi-Agent Roundtable</h3>
+<p>Package all research results (paper abstracts, formulas, backtest data) into NotebookLM.</p>
+<p>NotebookLM does three things for you:</p>
+<p><strong>① Mind Map</strong> — one-click knowledge structure of your entire strategy. Core concepts, quant metrics, and risk parameters interconnected at a glance.</p>
+<p><strong>② CEO-speed reading</strong> — &ldquo;Give me a 10-minute strategy overview.&rdquo;</p>
+<p><strong>③ Multi-agent roundtable</strong> — the crown jewel from Cola AI Lab video #6.</p>
+<p>Embed AI personas in your quant system for roundtable discussions:</p>
+<pre tabindex="0"><code>Buffett (Value Investing):
+&#34;Shorting bubble altcoins is fundamentally shorting human greed. This is
+the same logic I used to short the &#39;tronics boom&#39; in the 1960s. Only
+difference: that bubble lasted 3 years. Crypto bubbles compress into 3
+weeks. Margin for error is far smaller. My advice: never size a position
+larger than what lets you sleep at night.&#34;
+
+Gauss (Mathematics):
+&#34;The beauty of the LPPL model is that it doesn&#39;t predict direction — it
+predicts instability. As m → 0, the frequency of log-periodic oscillations
+increases dramatically — the system is approaching a critical point. It&#39;s
+not &#39;will it crash&#39; but &#39;when will it crash&#39; with increasing certainty.
+But note: LPPL&#39;s out-of-sample accuracy is only 60-70%. There&#39;s still a
+30% false-positive rate.&#34;
+
+Naval (Philosophy + Entrepreneurship):
+&#34;All these models do the same thing — find certainty inside uncertainty.
+But here&#39;s my warning: the most expensive lesson isn&#39;t the money you lose.
+It&#39;s the wrong lesson you learn from losing. Lose once and quit shorting?
+That&#39;s throwing the baby out with the bathwater. Lose once and double
+leverage to recover? That&#39;s gambling. Lose once and improve your stop-loss
++ shrink position sizes + tighten filters? That&#39;s iteration.&#34;
+</code></pre><p><strong>Newton (Final Judge):</strong></p>
+<p>&ldquo;Synthesizing all three: I determine the current X-factor value at 0.73 (1.2 standard deviations from mean). Recommendation: observation mode, no live trading. First verify your LPPL m-value is truly between 0 and 0.5. If sample m exceeds 0.5, you may be fitting a bubble that never existed.&rdquo;</p>
+<p>This multi-agent roundtable isn&rsquo;t just entertaining — it addresses <strong>cognitive bias</strong>. Everyone (including AI) has blind spots. Running your strategy through Buffett&rsquo;s lens, Gauss&rsquo;s lens, and Naval&rsquo;s lens simultaneously prevents &ldquo;resonant self-deception&rdquo; — believing your own story because no one challenged it.</p>
+<hr>
+<h3 id="step-4-generate-prd--claude-code-development">Step 4: Generate PRD → Claude Code Development</h3>
+<p>The final step: crystallize all analysis into a <strong>machine-readable PRD document</strong>.</p>
+<p>Regular requirements docs are for humans. A PRD for Claude Code must satisfy three criteria:</p>
+<blockquote>
+<ol>
+<li><strong>Precise problem statement</strong> — no &ldquo;feels like,&rdquo; &ldquo;maybe,&rdquo; &ldquo;probably&rdquo;</li>
+<li><strong>Clear architectural constraints</strong> — what can change, what can&rsquo;t, which modules to interface</li>
+<li><strong>Quantifiable acceptance criteria</strong> — what counts as &ldquo;success&rdquo;</li>
+</ol>
+</blockquote>
+<p>Here&rsquo;s a standard strategy PRD template, ready to hand to Claude Code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># PRD: Bubble Altcoin Short Strategy v1.0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Background
+</span></span></span><span style="display:flex;"><span>Under the mean-reversion hypothesis, altcoins that pump aggressively
+</span></span><span style="display:flex;"><span>in the short term will retrace once momentum exhausts. This strategy
+</span></span><span style="display:flex;"><span>identifies bubble-top signals and opens shorts.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Core Hypotheses
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> H1: Altcoin long-term value converges toward zero
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> H2: LPPL model reliably predicts bubble-top time windows
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> H3: Volume-price divergence + extreme funding rate = high-probability short
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Quantitative Rules
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Entry Conditions (ALL must be met)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> LPPL m-value &lt; 0.5 AND t_c - now &lt; 48 hours
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> Volume-price divergence (arctan method) &lt; 15°
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> Funding rate &gt; 0.1% (annualized &gt; 87.6%)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">4.</span> Open Interest growth rate &lt; 5% / 24h
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">5.</span> Market cap &gt; $100M (exclude dust coins)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Position Sizing
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Initial position: 2% of total capital
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Max leverage: 2x
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Max loss per trade: 1% of total capital
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Exit Conditions (ANY trigger)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> Take profit: price closes below 7-day MA
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> Stop loss: price breaches prior high + 1%
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> Time stop: position held &gt; 72 hours
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">4.</span> Funding rate reverts to zero or negative
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Risk Circuit Breakers
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Daily max loss &gt; 5% → halt trading today
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Weekly max loss &gt; 10% → pause for the week
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Max concurrent positions: 3
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Blacklist: 3 consecutive stops on same ticker → permanent exclusion
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Acceptance Criteria
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Backtest win rate &gt; 55%
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Profit factor &gt; 1.5:1
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Max drawdown &lt; 15%
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Sharpe ratio &gt; 1.0
+</span></span></code></pre></div><p>The power of this PRD:</p>
+<ul>
+<li>Claude Code reads it with <strong>zero ambiguity</strong> — every condition has a precise numeric threshold</li>
+<li>Every metric has a <strong>mathematical origin</strong> (LPPL from Sornette papers, divergence from derivative-angle method)</li>
+<li>Acceptance criteria are <strong>quantitatively testable</strong> — run the backtest and you immediately know pass/fail</li>
+</ul>
+<hr>
+<h2 id="part-3-prd-essence--writing-legal-code-for-ai">Part 3: PRD Essence — Writing &ldquo;Legal Code&rdquo; for AI</h2>
+<p>Many people misunderstand PRDs as &ldquo;detailed development docs.&rdquo; Wrong.</p>
+<p>A PRD&rsquo;s essence is <strong>constraint</strong>. It tells AI (and future you):</p>
+<ul>
+<li>✅ <strong>What you CAN do</strong>: free creativity within these boundaries</li>
+<li>❌ <strong>What you CANNOT do</strong>: these red lines are absolute</li>
+<li>📐 <strong>What success looks like</strong>: acceptance criteria = passing grade</li>
+</ul>
+<p>A good PRD reads like legal code — no ambiguity, no gray areas. Any two rational people reach the same understanding.</p>
+<p>A bad PRD reads like poetry — full of metaphors, white space, and &ldquo;you know what I mean.&rdquo;</p>
+<p><strong>In the Vibe Coding era, PRD quality directly determines code quality.</strong> Feed AI a fuzzy requirement and you get fuzzy code. Feed it a precisely defined PRD and the output can exceed human programmer quality.</p>
+<hr>
+<h2 id="part-4-a-worked-example--btc-spot-strategy-prd">Part 4: A Worked Example — BTC Spot Strategy PRD</h2>
+<p>So you have something actionable immediately, I ran the pipeline to generate a <strong>BTC spot DCA + trend enhancement strategy</strong> PRD:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># PRD: BTC Spot DCA + Trend Enhancement v1.0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Background
+</span></span></span><span style="display:flex;"><span>Based on Part 1&#39;s 5,000-evolution-experiment conclusion: spot-only,
+</span></span><span style="display:flex;"><span>long-only, simplest strategy wins.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Core Rules
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### DCA Layer (70% of capital)
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Fixed weekly BTC DCA purchase
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Execution: every Monday UTC 00:00
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Rebalancing: quarterly check
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Trend Enhancement Layer (30% of capital)
+</span></span></span><span style="display:flex;"><span>Entry (ALL must be met):
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> BTC price &gt; 50-day MA
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> Volume &gt; 20-day average × 1.2
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> 30-day volatility &lt; 60-day volatility (volatility convergence)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">4.</span> 2 consecutive up-close days
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Exit (ANY trigger):
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> BTC drops below 50-day MA → sell all enhancement position
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> Volume shrinks below 20-day average × 0.5
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> Max hold: 14 days
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">4.</span> Enhancement entry: 10% per signal
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Risk Controls
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Total position never exceeds 100%
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Drop below 200-day MA → pause DCA, resume on reclaim
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">### Acceptance Criteria
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> 12-month backtest &gt; DCA baseline + 15%
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Max drawdown &lt; 20%
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Trade count &gt; 12 (excludes &#34;lucky one-shot&#34;)
+</span></span></code></pre></div><hr>
+<h2 id="part-5-why-most-people-get-stuck-at-step-2">Part 5: Why Most People Get Stuck at Step 2</h2>
+<p>Observing the quant traders around me, nearly all of them get stuck at the same place:</p>
+<p><strong>Step 2: Using Deep Research to mine quant models.</strong></p>
+<p>It&rsquo;s not a capability problem. It&rsquo;s an <strong>impatience</strong> problem.</p>
+<p>Most people jump straight into Cursor and start coding. Three lines in, they switch strategies. Five strategies written in a week. Zero backtest results worth looking at.</p>
+<p>What&rsquo;s wrong? <strong>No knowledge accumulation upfront.</strong></p>
+<p>Cola AI Lab video #6 has a line I strongly endorse:</p>
+<blockquote>
+<p>&ldquo;Don&rsquo;t open Cursor and blindly write code. First describe your trading intuition in natural language. Then use Deep Research to pull professional quant metrics and financial logic for dimensionality reduction. Finally, crystallize these rigorous rules into an AI-readable PRD.&rdquo;</p>
+</blockquote>
+<p>The time allocation for these four steps should be:</p>
+<pre tabindex="0"><code>Intuition articulation: 10% (30 min)
+Deep Research: 50% (2-3 hours) ← the most important investment
+NotebookLM + roundtable: 25% (1 hour)
+PRD document: 15% (30 min)
+</code></pre><p>Most people invert this ratio: 10% thinking about strategy, 90% writing code + debugging.</p>
+<p><strong>Strategy design is intellectual labor. Code implementation is manual labor. AI has already automated the manual labor. You should spend all your brainpower on the first three steps.</strong></p>
+<hr>
+<h2 id="part-6-strategy-prd-vs-code--which-is-more-valuable">Part 6: Strategy PRD vs. Code — Which Is More Valuable?</h2>
+<p>Question:</p>
+<p>The &ldquo;Bubble Altcoin Short PRD&rdquo; (above) vs. its corresponding <code>collector.py</code> code file. Which is more valuable?</p>
+<p>Answer: <strong>the PRD.</strong></p>
+<p>Why:</p>
+<ul>
+<li><strong>PRD is reusable knowledge IP.</strong> Today&rsquo;s altcoin short strategy can become tomorrow&rsquo;s meme-stock short or small-cap A-share short — same logic, different tickers.</li>
+<li><strong>Code is consumable.</strong> Exchange API changes → code breaks. Dependency updates → errors. Strategy logic changes → rewrites.</li>
+<li><strong>PRD is directly &ldquo;understood&rdquo; and executed by AI.</strong> Hand the PRD to Claude Code and it can implement the strategy on any exchange. But hand the code to another AI and ask it to &ldquo;understand the strategy logic&rdquo; — that&rsquo;s a reading comprehension test, not a translation.</li>
+</ul>
+<p><strong>My advice: manage your strategy PRDs as IP.</strong></p>
+<p>Store each strategy PRD in Obsidian, tag it, review periodically. A good PRD cross-markets, cross-cycles reusable. That&rsquo;s true &ldquo;knowledge compounding.&rdquo;</p>
+<hr>
+<h2 id="part-7-summary--four-steps-from-i-feel-to-mathematically-proven">Part 7: Summary — Four Steps from &ldquo;I Feel&rdquo; to &ldquo;Mathematically Proven&rdquo;</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Step</th>
+          <th style="text-align: left">What</th>
+          <th style="text-align: left">Tool</th>
+          <th style="text-align: left">Time</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">① Intuition</td>
+          <td style="text-align: left">Describe strategy in plain language</td>
+          <td style="text-align: left">Any LLM</td>
+          <td style="text-align: left">30 min</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">② Deep Research</td>
+          <td style="text-align: left">Mine academic models + quant metrics</td>
+          <td style="text-align: left">Deep Research</td>
+          <td style="text-align: left">2-3 hours</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">③ Knowledge Synthesis</td>
+          <td style="text-align: left">Mind map + CEO-speed-read + AI roundtable</td>
+          <td style="text-align: left">NotebookLM</td>
+          <td style="text-align: left">1 hour</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">④ PRD Document</td>
+          <td style="text-align: left">Crystallize into machine-readable spec</td>
+          <td style="text-align: left">Claude Code</td>
+          <td style="text-align: left">30 min</td>
+      </tr>
+  </tbody>
+</table>
+<p>Total: 4-5 hours. Output: a trading strategy implementable on any market, any exchange.</p>
+<p><strong>This isn&rsquo;t a gut feeling. This is mathematics.</strong></p>
+<hr>
+<h2 id="coming-up-part-5">Coming Up: Part 5</h2>
+<p><em>&ldquo;Backtests Look Perfect, Live Accounts Bleed — Why 90% Die at This Step&rdquo;</em></p>
+<p>We&rsquo;ll use Taylor expansion to expose backtest overfitting traps:</p>
+<ul>
+<li>Constant noise → you&rsquo;ve handled it</li>
+<li>First/second derivative noise → strategy captures core signals</li>
+<li>High-order noise → <strong>this is what kills your live account</strong></li>
+</ul>
+<p>And: <strong>How to make Jarvis auto-detect if your strategy is overfitting.</strong></p>
+<hr>
+<p><em>This series is based on Cola AI Lab&rsquo;s quantitative trading research. All code is open source. This is not investment advice.</em></p>
+<hr>
+<blockquote>
+<p>💬 How do you develop your trading strategies? Gut feeling? Indicators? Math? Share below.</p>
+</blockquote>
+<p><strong>Series Index:</strong></p>
+<ol>
+<li>✅ Spot vs. Contracts — The Brutal Math</li>
+<li>✅ One-Click Environment Setup</li>
+<li>✅ Free APIs + AI = Your Bloomberg Terminal</li>
+<li>✅ <strong>This Post</strong> — Strategies Aren&rsquo;t Gut Feelings</li>
+<li>🔜 Backtests That Look Perfect, Live Accounts That Bleed</li>
+</ol>
+]]></content:encoded></item></channel></rss>

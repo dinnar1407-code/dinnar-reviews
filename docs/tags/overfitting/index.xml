@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Overfitting on Best Tools Review 2026</title><link>https://dinnar.us.com/tags/overfitting/</link><description>Recent content in Overfitting on Best Tools Review 2026</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 23 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://dinnar.us.com/tags/overfitting/index.xml" rel="self" type="application/rss+xml"/><item><title>Backtests That Look Perfect, Live Accounts That Bleed — Why 90% Die Here</title><link>https://dinnar.us.com/en/posts/jarvis-trading-05-backtesting/</link><pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate><guid>https://dinnar.us.com/en/posts/jarvis-trading-05-backtesting/</guid><description>Why does your 462% annualized backtest go to zero in three weeks of live trading? Taylor expansion reveals three noise traps — and Jarvis&amp;#39;s automated overfitting detector catches them before you lose money.</description><content:encoded><![CDATA[<h2 id="part-1-a-real-backtest-and-a-real-blowup">Part 1: A Real Backtest, and a Real Blowup</h2>
+<p>Fall 2025. A friend excitedly showed me his backtest results:</p>
+<pre tabindex="0"><code>Backtest period: 2023-01-01 → 2025-09-30
+Instrument: BTC/USD (Perpetual)
+Initial capital: $10,000
+Final capital: $1,247,000
+Total return: 12,470%
+Annualized: 462%
+Max drawdown: 7.2%
+Win rate: 68.3%
+Profit factor: 3.4:1
+Sharpe ratio: 3.8
+</code></pre><p><strong>12,370% return. 7.2% max drawdown. Sharpe of 3.8.</strong></p>
+<p>If this were a resume, every hedge fund on Wall Street would be calling immediately.</p>
+<p>He went live. Three weeks later, the account was zero.</p>
+<p>What happened in those three weeks?</p>
+<pre tabindex="0"><code>Week 1: +15% → &#34;Knew it was good.&#34;
+Week 2: -8% → &#34;Normal drawdown, matches backtest.&#34;
+Week 3: -60% → &#34;Why? WHY does it look nothing like the backtest?!&#34;
+     → Added more capital.
+     → -95%.
+     → Liquidated.
+</code></pre><p>He&rsquo;s not alone. <strong>This is the rite of passage every quant trader must endure.</strong></p>
+<p>Don&rsquo;t believe me? Buy a quant trading course and watch the group chat. You&rsquo;ll notice a pattern: <strong>the first three months are flooded with backtest curves. By month six, the live traders are silent.</strong> Everyone who disappeared in between? Overfitting.</p>
+<hr>
+<h2 id="part-2-taylor-expansion--why-backtests-lie">Part 2: Taylor Expansion — Why Backtests Lie</h2>
+<p>Cola AI Lab video #4 contains what I consider the deepest explanation of overfitting anywhere on the internet:</p>
+<blockquote>
+<p>&ldquo;K-line data = Taylor expansion: constant term + first derivative (V) + second derivative (A) + high-order noise. Your backtest didn&rsquo;t blow up because you failed to find a pattern. It blew up because you treated noise as pattern.&rdquo;</p>
+</blockquote>
+<p>Let me translate that into plain language.</p>
+<p>Any price time series can be written as a Taylor expansion:</p>
+<pre tabindex="0"><code>P(t) = C₀ + V·t + A·t² + ε(t)
+       ───   ────   ─────   ────
+      const  trend  momentum  noise
+</code></pre><ul>
+<li><strong>Constant term C₀</strong>: average price level. Already eliminated by differentiation (strategies only care about price changes, not absolute prices).</li>
+<li><strong>First derivative V</strong>: price trend (velocity). What every trend-following strategy tries to capture.</li>
+<li><strong>Second derivative A</strong>: trend acceleration. The core of momentum strategies.</li>
+<li><strong>High-order noise ε(t)</strong>: every random fluctuation not captured by your model.</li>
+</ul>
+<p><strong>Where does it go wrong?</strong></p>
+<p>Look at what your backtesting engine is doing:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># What most backtesting engines do (pseudocode)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> each historical day:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> strategy_signal() <span style="color:#f92672">==</span> BUY:
+</span></span><span style="display:flex;"><span>        open_long()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> strategy_signal() <span style="color:#f92672">==</span> SELL:
+</span></span><span style="display:flex;"><span>        close_long()
+</span></span><span style="display:flex;"><span>    record_pnl()
+</span></span></code></pre></div><p>Your backtest &ldquo;looks at&rdquo; historical data, then &ldquo;pretends&rdquo; to trade on it.</p>
+<p>But in historical data, V, A, and ε are all <strong>known values</strong>. The curve your strategy fits might be:</p>
+<pre tabindex="0"><code>Real signal captured:    30%
+Trend (V) captured:      20%
+Momentum (A) captured:   15%
+Noise (ε) fitted:        35%
+</code></pre><p><strong>35% of your return came from noise.</strong> But the backtest engine can&rsquo;t see this — because within the backtest window, ε is also &ldquo;deterministic.&rdquo;</p>
+<p>The moment you go live, ε becomes a true random variable. That 35% noise-based return vanishes instantly. Worse — it becomes your source of losses.</p>
+<hr>
+<h2 id="part-3-three-noise-traps">Part 3: Three Noise Traps</h2>
+<p>Cola AI Lab video #4 breaks noise into three types. This is the core of this article.</p>
+<h3 id="noise-type-1-constant-bias">Noise Type 1: Constant Bias</h3>
+<pre tabindex="0"><code>Example: Your strategy backtested brilliantly for 2019-2020.
+Why? Because BTC went from $3,000 to $30,000 — a 10x move.
+
+Your strategy just happened to &#34;bet in the right direction.&#34;
+What you earned wasn&#39;t strategy returns. It was trend returns.
+</code></pre><p>Constant bias is already eliminated by first-order differentiation (you&rsquo;re looking at price changes, not absolute levels), making it the easiest of the three to handle. As long as your backtest spans a complete bull-bear cycle, constant bias gets averaged out within the sample.</p>
+<p><strong>Detection method</strong>: Split your backtest period into equal bull and bear halves. Evaluate strategy performance independently. If bull outperforms bear dramatically, your strategy is consuming constant dividends (Beta), not generating Alpha.</p>
+<h3 id="noise-type-2-coupling">Noise Type 2: Coupling</h3>
+<pre tabindex="0"><code>Example: Your strategy uses MACD, RSI, and Bollinger Bands simultaneously.
+But have you considered: MACD and RSI are both derivatives of price.
+They describe the same thing — price momentum strength.
+
+Three indicators capturing one signal, just in three different languages.
+You think you&#39;re diversifying. You&#39;re actually &#34;resonating with overconfidence.&#34;
+</code></pre><p>Coupling noise is mathematical collinearity. When two highly correlated variables sit in the same model, the model assigns them weights that happen to balance out in-sample — one underweighted, one overweighted. The slightest out-of-sample jitter shatters this fragile equilibrium.</p>
+<p>Cola&rsquo;s exact words: &ldquo;Bollinger Bands are essentially a coupling illusion between V and A. Just throw it away.&rdquo; He&rsquo;s precise — Bollinger Band width (volatility) and price acceleration are coupled by definition. Adding Bollinger Bands to your strategy is just putting a different coat on the same information source.</p>
+<p><strong>Detection method</strong>: Calculate the correlation matrix of all indicators in your strategy. For any pair with correlation &gt; 0.7, delete one. Keep only the most primitive information source.</p>
+<h3 id="noise-type-3-high-order-noise-most-lethal">Noise Type 3: High-Order Noise (Most Lethal)</h3>
+<pre tabindex="0"><code>Example: Your strategy has 15 entry conditions.
+Every single one is a &#34;carefully tuned&#34; parameter:
+MACD fast = 12 (not 13), RSI overbought = 72 (not 70),
+Stop loss = 3.2% (not 3%), hold = exactly 7 days (not 8)…
+
+Where did these numbers come from? Backtest tuning.
+Why 12 instead of 13? Because 12 gave 2% more return in the backtest.
+What was that 2%? Noise.
+</code></pre><p>High-order noise is the <strong>most lethal, hardest to identify, most likely to blow up your account</strong> type of noise.</p>
+<p>Why? Because high-order noise in a backtest looks <strong>exactly like real signal</strong>.</p>
+<p>A genuine trend signal and a curve-fitted noise signal look identical in a backtest equity curve — both are smooth upward slopes. The only difference: <strong>real signals persist in live markets. Noise signals vanish (or reverse).</strong></p>
+<p>Cola uses a beautiful analogy:</p>
+<blockquote>
+<p>&ldquo;What kind of noise is anxiety in our lives?</p>
+<p>You scroll through videos and see &lsquo;20-year-old made millions with AI&rsquo; — this information detonates your emotions within days. If it influences you — you impulsively buy an overpriced course, or blindly chase a trend — you immediately deviate from your core trajectory.</p>
+<p><strong>Anxiety is the high-order noise in the equation of our lives.</strong>&rdquo;</p>
+</blockquote>
+<p>That analogy is brilliant.</p>
+<ul>
+<li>&ldquo;Anxiety&rdquo; in markets = financial news, KOL shoutouts, friends showing off profits</li>
+<li>&ldquo;Anxiety&rdquo; in your strategy = that &ldquo;perfect parameter&rdquo; you tweaked 200 times to find</li>
+</ul>
+<p><strong>Detection method</strong>: Parameter sensitivity analysis. Change a parameter by ±10%. Does strategy performance swing by more than 30%? Then that &ldquo;optimal value&rdquo; was noise-fitted, not signal.</p>
+<hr>
+<h2 id="part-4-the-only-way-to-beat-overfitting--become-someone-elses-noise">Part 4: The Only Way to Beat Overfitting — Become Someone Else&rsquo;s Noise</h2>
+<p>This is the most counterintuitive, brilliant insight from Cola AI Lab video #4:</p>
+<blockquote>
+<p>&ldquo;The way to beat overfitting is to become someone else&rsquo;s noise.&rdquo;</p>
+</blockquote>
+<p>What does that mean?</p>
+<p>Return to the Taylor expansion:</p>
+<pre tabindex="0"><code>P(t) = C₀ + V·t + A·t² + ε(t)
+</code></pre><p>Your overfitted strategy is essentially fitting the high-order term ε(t). But when your <strong>decision cycle (t) is sufficiently small</strong> — smaller than the market&rsquo;s dominant player decision cycle — the high-order noise &ldquo;collapses&rdquo; for you.</p>
+<p>Mathematically:</p>
+<pre tabindex="0"><code>Assume market dominant decision cycle = 1 day
+Your decision cycle = 1 hour = 1/24 day = 0.04 days
+
+Then:
+ε(0.04)³ = 0.000064 → approaches zero
+</code></pre><p><strong>Your high-frequency trading constitutes noise for the slow-moving dominant players.</strong></p>
+<p>You are their ε(t). Their impact on your strategy becomes negligible.</p>
+<p>But conversely — a market maker with <strong>millisecond</strong> decision cycles (Jump Trading, Jane Street) also constitutes ε(t) to you. You&rsquo;re the &ldquo;slow player.&rdquo; They can predict your behavior with precision.</p>
+<p><strong>This is the financial market food chain:</strong></p>
+<pre tabindex="0"><code>Millisecond market makers → eat minute-level quants → eat hour-level quants
+→ eat daily retail → eat yearly &#34;DCA investors&#34;
+
+Each layer&#39;s noise is the layer above&#39;s deterministic profit source.
+</code></pre><p><strong>So the key to beating overfitting isn&rsquo;t &ldquo;not overfitting&rdquo; — that&rsquo;s impossible. It&rsquo;s:</strong></p>
+<ol>
+<li><strong>Shrink your decision cycle enough</strong> (but not below the friction cost of fees + slippage)</li>
+<li><strong>Use the law of large numbers to dilute individual noise impact</strong> (high-frequency small wins → accumulate microscopic edges into macroscopic returns)</li>
+<li><strong>Never compete with someone faster than you</strong> — find a niche where you&rsquo;re faster than the layer below, and the layer above is faster than you but too busy to eat you</li>
+</ol>
+<hr>
+<h2 id="part-5-jarvis-automated-overfitting-detection-report">Part 5: Jarvis Automated Overfitting Detection Report</h2>
+<p>All this theory needs to land in practice. Jarvis has a module called <code>overfit_detector.py</code> that automatically generates an overfitting report after every backtest.</p>
+<p>Core logic:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jarvis Overfitting Detection Engine — overfit_detector.py
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Based on Cola AI Lab&#39;s Taylor-expansion noise analysis framework.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Automatically detects three noise traps.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Dict, List
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OverfitDetector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Overfitting Detector
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Input: strategy backtest results + parameter configuration
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Output: overfitting risk score + noise report
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, trades: pd<span style="color:#f92672">.</span>DataFrame, params: dict, benchmark_returns: pd<span style="color:#f92672">.</span>Series):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>trades <span style="color:#f92672">=</span> trades
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>params <span style="color:#f92672">=</span> params
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>benchmark <span style="color:#f92672">=</span> benchmark_returns
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_constant_bias</span>(self) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Check if returns are primarily market Beta, not Alpha&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        bull <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>trades[self<span style="color:#f92672">.</span>trades[<span style="color:#e6db74">&#34;market_regime&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;bull&#34;</span>]
+</span></span><span style="display:flex;"><span>        bear <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>trades[self<span style="color:#f92672">.</span>trades[<span style="color:#e6db74">&#34;market_regime&#34;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;bear&#34;</span>]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        bull_alpha <span style="color:#f92672">=</span> bull[<span style="color:#e6db74">&#34;return&#34;</span>]<span style="color:#f92672">.</span>mean() <span style="color:#66d9ef">if</span> len(bull) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        bear_alpha <span style="color:#f92672">=</span> bear[<span style="color:#e6db74">&#34;return&#34;</span>]<span style="color:#f92672">.</span>mean() <span style="color:#66d9ef">if</span> len(bear) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        gap <span style="color:#f92672">=</span> abs(bull_alpha <span style="color:#f92672">-</span> bear_alpha) <span style="color:#f92672">/</span> (abs(bull_alpha) <span style="color:#f92672">+</span> abs(bear_alpha) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1e-8</span>)
+</span></span><span style="display:flex;"><span>        risk <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;HIGH&#34;</span> <span style="color:#66d9ef">if</span> gap <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;MEDIUM&#34;</span> <span style="color:#66d9ef">if</span> gap <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.3</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;LOW&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;Constant Bias&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;risk&#34;</span>: risk,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;bull_alpha&#34;</span>: bull_alpha,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;bear_alpha&#34;</span>: bear_alpha,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;gap_ratio&#34;</span>: gap,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;verdict&#34;</span>: <span style="color:#e6db74">&#34;Returns primarily from Beta, Alpha questionable&#34;</span> <span style="color:#66d9ef">if</span> risk <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;HIGH&#34;</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;Normal&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_coupling</span>(self) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Detect indicator collinearity&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        param_names <span style="color:#f92672">=</span> list(self<span style="color:#f92672">.</span>params<span style="color:#f92672">.</span>keys())
+</span></span><span style="display:flex;"><span>        coupling_pairs <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        price_derived <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;macd&#34;</span>, <span style="color:#e6db74">&#34;rsi&#34;</span>, <span style="color:#e6db74">&#34;ema&#34;</span>, <span style="color:#e6db74">&#34;sma&#34;</span>, <span style="color:#e6db74">&#34;bb&#34;</span>, <span style="color:#e6db74">&#34;bollinger&#34;</span>}
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(param_names)):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, len(param_names)):
+</span></span><span style="display:flex;"><span>                a_is <span style="color:#f92672">=</span> any(p <span style="color:#f92672">in</span> param_names[i]<span style="color:#f92672">.</span>lower() <span style="color:#66d9ef">for</span> p <span style="color:#f92672">in</span> price_derived)
+</span></span><span style="display:flex;"><span>                b_is <span style="color:#f92672">=</span> any(p <span style="color:#f92672">in</span> param_names[j]<span style="color:#f92672">.</span>lower() <span style="color:#66d9ef">for</span> p <span style="color:#f92672">in</span> price_derived)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> a_is <span style="color:#f92672">and</span> b_is:
+</span></span><span style="display:flex;"><span>                    coupling_pairs<span style="color:#f92672">.</span>append((param_names[i], param_names[j]))
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        risk <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;HIGH&#34;</span> <span style="color:#66d9ef">if</span> len(coupling_pairs) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;MEDIUM&#34;</span> <span style="color:#66d9ef">if</span> coupling_pairs <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;LOW&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;Coupling (Collinearity)&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;risk&#34;</span>: risk,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;pairs&#34;</span>: coupling_pairs,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;advice&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Remove </span><span style="color:#e6db74">{</span>len(coupling_pairs)<span style="color:#e6db74">}</span><span style="color:#e6db74"> redundant indicators&#34;</span> <span style="color:#66d9ef">if</span> coupling_pairs <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;Clean&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_high_order_noise</span>(self) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Parameter sensitivity analysis&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        results <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> name, val <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>params<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> isinstance(val, (int, float)):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            base_perf <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_sim_perf(val)
+</span></span><span style="display:flex;"><span>            up_perf <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_sim_perf(val <span style="color:#f92672">*</span> <span style="color:#ae81ff">1.10</span>)
+</span></span><span style="display:flex;"><span>            down_perf <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>_sim_perf(val <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.90</span>)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            avg_change <span style="color:#f92672">=</span> (abs(up_perf <span style="color:#f92672">-</span> base_perf) <span style="color:#f92672">+</span> abs(down_perf <span style="color:#f92672">-</span> base_perf)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>            sensitivity <span style="color:#f92672">=</span> avg_change <span style="color:#f92672">/</span> (<span style="color:#ae81ff">0.10</span> <span style="color:#f92672">*</span> val)
+</span></span><span style="display:flex;"><span>            overfit <span style="color:#f92672">=</span> sensitivity <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.3</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            results<span style="color:#f92672">.</span>append({
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;param&#34;</span>: name, <span style="color:#e6db74">&#34;value&#34;</span>: val,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;sensitivity&#34;</span>: round(sensitivity, <span style="color:#ae81ff">3</span>), <span style="color:#e6db74">&#34;overfit&#34;</span>: overfit
+</span></span><span style="display:flex;"><span>            })
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        overfit_count <span style="color:#f92672">=</span> sum(<span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> r <span style="color:#f92672">in</span> results <span style="color:#66d9ef">if</span> r[<span style="color:#e6db74">&#34;overfit&#34;</span>])
+</span></span><span style="display:flex;"><span>        risk <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;HIGH&#34;</span> <span style="color:#66d9ef">if</span> overfit_count <span style="color:#f92672">&gt;</span> len(results) <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;MEDIUM&#34;</span> <span style="color:#66d9ef">if</span> overfit_count <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;LOW&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;High-Order Noise&#34;</span>, <span style="color:#e6db74">&#34;risk&#34;</span>: risk, <span style="color:#e6db74">&#34;results&#34;</span>: results, <span style="color:#e6db74">&#34;overfit_count&#34;</span>: overfit_count}
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_sim_perf</span>(self, val: float) <span style="color:#f92672">-&gt;</span> float:
+</span></span><span style="display:flex;"><span>        np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>seed(int(val <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0.15</span> <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.02</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_report</span>(self) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Generate full Markdown report&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>check_constant_bias()
+</span></span><span style="display:flex;"><span>        cp <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>check_coupling()
+</span></span><span style="display:flex;"><span>        ho <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>check_high_order_noise()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        score <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;LOW&#34;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;MEDIUM&#34;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;HIGH&#34;</span>: <span style="color:#ae81ff">2</span>}
+</span></span><span style="display:flex;"><span>        total <span style="color:#f92672">=</span> score[c[<span style="color:#e6db74">&#34;risk&#34;</span>]] <span style="color:#f92672">+</span> score[cp[<span style="color:#e6db74">&#34;risk&#34;</span>]] <span style="color:#f92672">+</span> score[ho[<span style="color:#e6db74">&#34;risk&#34;</span>]]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> total <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>            overall <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;🟢 LOW RISK — Low overfitting probability. Consider small live test.&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> total <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">4</span>:
+</span></span><span style="display:flex;"><span>            overall <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;🟡 MEDIUM RISK — Clear overfitting signs. Simplify strategy first.&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            overall <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;🔴 HIGH RISK — Severe overfitting. Do NOT deploy live.&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># ... builds full report with all three sections</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;# Overfitting Detection Report</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">## Overall: </span><span style="color:#e6db74">{</span>overall<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">...&#34;</span>
+</span></span></code></pre></div><h3 id="three-sentence-summary-of-overfitting-detection">Three-Sentence Summary of Overfitting Detection:</h3>
+<ol>
+<li><strong>Constant Bias</strong> → Run bull/bear separately. Bull outperforming dramatically? You&rsquo;re consuming Beta, not Alpha.</li>
+<li><strong>Coupling</strong> → Compute indicator correlation matrix. Any pair &gt; 0.7? Delete one. Keep only the primitive source.</li>
+<li><strong>High-Order Noise</strong> → Parameter sensitivity analysis. ±10% parameter change → &gt;30% performance swing? That &ldquo;optimal value&rdquo; was noise-fitted.</li>
+</ol>
+<p><strong>Simpler rules, fewer parameters, lower overfitting probability.</strong> The ultimate conclusion from Cola AI Lab&rsquo;s 5,000 evolution experiments, validated once again.</p>
+<hr>
+<h2 id="part-6-embed-this-report-into-your-strategy-development-workflow">Part 6: Embed This Report Into Your Strategy Development Workflow</h2>
+<p>Jarvis&rsquo;s complete workflow:</p>
+<pre tabindex="0"><code>1. Write strategy PRD (Part 4) ✅
+2. Claude Code implements strategy code ✅
+3. Run backtest ✅
+4. Auto-generate overfitting detection report ← THIS POST
+5. Evaluate report → LOW risk? → Proceed to Part 6 (paper trading)
+                  → HIGH risk? → Simplify, re-run
+6. Paper trading test (Part 6)
+7. Live deployment (Part 8)
+</code></pre><p><strong>Step 4 is the gatekeeper.</strong> If the overfitting report says no, don&rsquo;t go to Step 6. The cost of fixing a strategy during backtesting is near zero. Fixing it after going live is too late.</p>
+<hr>
+<h2 id="part-7-final-warning">Part 7: Final Warning</h2>
+<p>I must add this disclaimer:</p>
+<p><strong>Even after passing all overfitting checks, your strategy may still lose money live.</strong></p>
+<p>Why?</p>
+<ul>
+<li><strong>Markets evolve.</strong> The 2026 market is not the 2025 market, and certainly not the 2024 market. Your strategy may be the optimal fit for past noise, not an effective capture of future signal.</li>
+<li><strong>Your trades change the market.</strong> With enough capital, your buys push prices up and your sells push them down. The &ldquo;perfect fills&rdquo; in backtests don&rsquo;t exist live.</li>
+<li><strong>Black swans live outside the Taylor expansion.</strong> LUNA crash, FTX collapse, March 12 flash crash — these events don&rsquo;t follow normal distribution assumptions. They exist outside ε(t).</li>
+</ul>
+<p>What overfitting detection does is <strong>eliminate the worst strategies</strong>, not <strong>find the best strategy</strong>.</p>
+<p>True Alpha doesn&rsquo;t live in how perfect your backtest looks. It lives in how strong your conviction in the strategy is — and how robust your risk circuit breakers are.</p>
+<hr>
+<h2 id="coming-up-part-6">Coming Up: Part 6</h2>
+<p><em>&ldquo;Vibe-Coded Stop Losses Cost Me a Month of Profits&rdquo;</em></p>
+<p>A true story:</p>
+<ul>
+<li>The fatal flaw hidden in AI-written stop-loss logic</li>
+<li>The mathematical trap of SIGMOID entry/exit (the core lesson from Cola AI video #3)</li>
+<li>Taylor expansion exit mechanisms: why &ldquo;derivatives and order reduction&rdquo; beats S-curves</li>
+<li>Jarvis real-time risk control module design and implementation</li>
+</ul>
+<hr>
+<p><em>This series is based on Cola AI Lab&rsquo;s quantitative trading research. All code is open source. This is not investment advice.</em></p>
+<hr>
+<blockquote>
+<p>💬 Have you been burned by overfitting? Share your experience in the comments.</p>
+</blockquote>
+<p><strong>Series Index:</strong></p>
+<ol>
+<li>✅ Spot vs. Contracts — The Brutal Math</li>
+<li>✅ One-Click Environment Setup</li>
+<li>✅ Free APIs + AI = Your Bloomberg Terminal</li>
+<li>✅ Strategies Aren&rsquo;t Gut Feelings</li>
+<li>✅ <strong>This Post</strong> — Backtests Lie, Live Accounts Bleed</li>
+<li>🔜 Vibe-Coded Stop Losses Cost Me a Month of Profits</li>
+</ol>
+]]></content:encoded></item></channel></rss>

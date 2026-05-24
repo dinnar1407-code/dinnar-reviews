@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Data-Engineering on Best Tools Review 2026</title><link>https://dinnar.us.com/tags/data-engineering/</link><description>Recent content in Data-Engineering on Best Tools Review 2026</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 23 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://dinnar.us.com/tags/data-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>Free APIs + AI = Your Personal Bloomberg Terminal</title><link>https://dinnar.us.com/en/posts/jarvis-trading-03-data-engine/</link><pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate><guid>https://dinnar.us.com/en/posts/jarvis-trading-03-data-engine/</guid><description>How I built a real-time multi-exchange data engine using Kraken/Coinbase free APIs, Redis caching, PostgreSQL storage, OpenClaw Cron, and automatic Obsidian market snapshots — all for $0.</description><content:encoded><![CDATA[<h2 id="part-1-how-much-does-bloomberg-terminal-cost">Part 1: How Much Does Bloomberg Terminal Cost?</h2>
+<p>Let&rsquo;s start with some numbers:</p>
+<ul>
+<li><strong>Bloomberg Terminal</strong>: $24,000/year/license. Exchange fees not included.</li>
+<li><strong>Reuters Eikon</strong>: $22,000/year/license.</li>
+<li><strong>Wind (万得)</strong>: ~$5,700/year in China.</li>
+</ul>
+<p>What do these professional terminals actually provide? Three things:</p>
+<ol>
+<li><strong>Real-time market data</strong> — quotes, order books, and trade data from global exchanges</li>
+<li><strong>Historical data</strong> — pull up any instrument&rsquo;s historical candles for analysis</li>
+<li><strong>Information aggregation</strong> — auto-push for news, announcements, and research reports</li>
+</ol>
+<p>Three things. $24,000 a year. That&rsquo;s roughly ¥170,000.</p>
+<p>But here&rsquo;s the thing — in 2026, AI can do all three for you. And it costs <strong>exactly $0 to start</strong>.</p>
+<hr>
+<h2 id="part-2-jarvis-data-engine-architecture--the-three-layer-design">Part 2: Jarvis Data Engine Architecture — The &ldquo;Three Layer&rdquo; Design</h2>
+<p>Building on the Docker Compose foundation from Part 2, we&rsquo;re now giving Jarvis a brain.</p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────────────┐
+│                Jarvis Data Engine v1.0                │
+├─────────────────────────────────────────────────────┤
+│                                                       │
+│  ┌─────────────┐   ┌─────────────┐   ┌────────────┐ │
+│  │ Kraken API  │   │ Coinbase API│   │  Future:    │ │
+│  │  (Free)      │   │  (Free)      │   │  Binance    │ │
+│  │             │   │             │   │  OKX/Bybit  │ │
+│  └──────┬──────┘   └──────┬──────┘   └────────────┘ │
+│         │                 │                           │
+│         └────────┬────────┘                           │
+│                  ▼                                    │
+│         ┌───────────────┐                            │
+│         │  Redis Cache   │  ← Real-time (TTL=300s)    │
+│         │  Sub-ms R/W    │                            │
+│         └───────┬───────┘                            │
+│                  │                                    │
+│                  ▼                                    │
+│         ┌───────────────┐                            │
+│         │ PostgreSQL    │  ← Historical OHLCV          │
+│         │  + TimescaleDB │    (Time-series optimized)  │
+│         └───────┬───────┘                            │
+│                  │                                    │
+│         ┌────────┴────────┐                          │
+│         ▼                 ▼                          │
+│   ┌──────────┐     ┌──────────────┐                 │
+│   │ Grafana  │     │  Obsidian    │                 │
+│   │ Dashboard │     │  Snapshots   │                 │
+│   └──────────┘     └──────────────┘                 │
+│                                                       │
+│         ┌─────────────────────────┐                 │
+│         │  OpenClaw Cron          │                 │
+│         │  Triggers every 5 min    │                 │
+│         └─────────────────────────┘                 │
+└─────────────────────────────────────────────────────┘
+</code></pre><h3 id="why-this-architecture">Why This Architecture?</h3>
+<p><strong>Redis in front, PostgreSQL in back</strong> — this is a classic &ldquo;cache-through&rdquo; pattern.</p>
+<p>Kraken&rsquo;s BTC/USD ticker updates every second. If you query the database for every read, PostgreSQL&rsquo;s millisecond-level latency plus network overhead means stale data by the time your strategy engine sees it.</p>
+<p>Redis reads and writes are <strong>sub-millisecond</strong>, entirely in-memory. Real-time quotes cached here mean near-zero latency for your strategy engine.</p>
+<p>But Redis data expires (we set a 300-second TTL). Historical candles, trade records, and backtesting need persistent storage — that&rsquo;s PostgreSQL&rsquo;s job.</p>
+<p><strong>Hot data first, cold data last. Speed first, permanence later.</strong></p>
+<hr>
+<h2 id="part-3-collectorpy--the-full-implementation">Part 3: collector.py — The Full Implementation</h2>
+<p>The data collector is the &ldquo;eyes&rdquo; of the entire system. If the eyes go blind, every downstream analysis is worthless.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Jarvis Data Collector v2.0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">============================
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Kraken + Coinbase free APIs → Redis cache → PostgreSQL persistence
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Upgrades (vs. Part 2 basic version):
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Added Coinbase source with cross-exchange spread comparison
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Added OHLCV (candlestick) collection into PostgreSQL
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Added anomaly detection with automatic alerts
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- Command-line argument support for selecting sources
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Usage:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    python src/data/collector.py              # Default: Kraken
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    python src/data/collector.py --exchange coinbase
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    python src/data/collector.py --all        # All exchanges
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os<span style="color:#f92672">,</span> json<span style="color:#f92672">,</span> argparse<span style="color:#f92672">,</span> redis<span style="color:#f92672">,</span> ccxt<span style="color:#f92672">,</span> psycopg2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timezone
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> dotenv <span style="color:#f92672">import</span> load_dotenv
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>load_dotenv()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Configuration</span>
+</span></span><span style="display:flex;"><span>REDIS_HOST <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;REDIS_HOST&#34;</span>, <span style="color:#e6db74">&#34;localhost&#34;</span>)
+</span></span><span style="display:flex;"><span>REDIS_PORT <span style="color:#f92672">=</span> int(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;REDIS_PORT&#34;</span>, <span style="color:#ae81ff">6379</span>))
+</span></span><span style="display:flex;"><span>PG_CONFIG <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;host&#34;</span>: os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;PG_HOST&#34;</span>, <span style="color:#e6db74">&#34;localhost&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;port&#34;</span>: int(os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;PG_PORT&#34;</span>, <span style="color:#ae81ff">5432</span>)),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;user&#34;</span>: os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;PG_USER&#34;</span>, <span style="color:#e6db74">&#34;jarvis&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;password&#34;</span>: os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;PG_PASSWORD&#34;</span>, <span style="color:#e6db74">&#34;jarvis123&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;dbname&#34;</span>: os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;PG_DATABASE&#34;</span>, <span style="color:#e6db74">&#34;jarvis&#34;</span>),
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>SYMBOLS <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;BTC/USD&#34;</span>, <span style="color:#e6db74">&#34;ETH/USD&#34;</span>]
+</span></span><span style="display:flex;"><span>REDIS_TTL <span style="color:#f92672">=</span> <span style="color:#ae81ff">300</span>
+</span></span><span style="display:flex;"><span>PRICE_ALERT_THRESHOLD <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>  <span style="color:#75715e"># 5% move triggers alert</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Lazy-loaded exchange connections</span>
+</span></span><span style="display:flex;"><span>_exchanges <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_exchange</span>(name: str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;kraken&#34;</span>) <span style="color:#f92672">-&gt;</span> ccxt<span style="color:#f92672">.</span>Exchange:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> name <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> _exchanges:
+</span></span><span style="display:flex;"><span>        klass <span style="color:#f92672">=</span> getattr(ccxt, name)
+</span></span><span style="display:flex;"><span>        _exchanges[name] <span style="color:#f92672">=</span> klass({<span style="color:#e6db74">&#34;enableRateLimit&#34;</span>: <span style="color:#66d9ef">True</span>})
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> _exchanges[name]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">collect_ticker</span>(exchange_name: str, symbol: str) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Pull ticker for a single pair&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    exchange <span style="color:#f92672">=</span> get_exchange(exchange_name)
+</span></span><span style="display:flex;"><span>    ticker <span style="color:#f92672">=</span> exchange<span style="color:#f92672">.</span>fetch_ticker(symbol)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;exchange&#34;</span>: exchange_name, <span style="color:#e6db74">&#34;symbol&#34;</span>: symbol,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;last&#34;</span>: ticker[<span style="color:#e6db74">&#34;last&#34;</span>], <span style="color:#e6db74">&#34;bid&#34;</span>: ticker[<span style="color:#e6db74">&#34;bid&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;ask&#34;</span>: ticker[<span style="color:#e6db74">&#34;ask&#34;</span>], <span style="color:#e6db74">&#34;volume_24h&#34;</span>: ticker[<span style="color:#e6db74">&#34;baseVolume&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;change_24h&#34;</span>: ticker[<span style="color:#e6db74">&#34;percentage&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;high_24h&#34;</span>: ticker<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;high&#34;</span>), <span style="color:#e6db74">&#34;low_24h&#34;</span>: ticker<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;low&#34;</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;timestamp&#34;</span>: datetime<span style="color:#f92672">.</span>now(timezone<span style="color:#f92672">.</span>utc)<span style="color:#f92672">.</span>isoformat(),
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">collect_ohlcv</span>(exchange_name: str, symbol: str, timeframe<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;5m&#34;</span>, limit<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Pull OHLCV candle data&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    exchange <span style="color:#f92672">=</span> get_exchange(exchange_name)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> exchange<span style="color:#f92672">.</span>fetch_ohlcv(symbol, timeframe<span style="color:#f92672">=</span>timeframe, limit<span style="color:#f92672">=</span>limit)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">store_ticker_to_redis</span>(r, data):
+</span></span><span style="display:flex;"><span>    key <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;ticker:</span><span style="color:#e6db74">{</span>data[<span style="color:#e6db74">&#39;exchange&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">{</span>data[<span style="color:#e6db74">&#39;symbol&#39;</span>]<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#39;/&#39;</span>, <span style="color:#e6db74">&#39;_&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    r<span style="color:#f92672">.</span>setex(key, REDIS_TTL, json<span style="color:#f92672">.</span>dumps(data))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">store_ohlcv_to_pg</span>(data_list, exchange, symbol):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Batch insert OHLCV into PostgreSQL&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    conn <span style="color:#f92672">=</span> psycopg2<span style="color:#f92672">.</span>connect(<span style="color:#f92672">**</span>PG_CONFIG)
+</span></span><span style="display:flex;"><span>    cur <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>    rows <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> o <span style="color:#f92672">in</span> data_list:
+</span></span><span style="display:flex;"><span>        ts <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>fromtimestamp(o[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000</span>, tz<span style="color:#f92672">=</span>timezone<span style="color:#f92672">.</span>utc)
+</span></span><span style="display:flex;"><span>        rows<span style="color:#f92672">.</span>append((exchange, symbol, ts, o[<span style="color:#ae81ff">1</span>], o[<span style="color:#ae81ff">2</span>], o[<span style="color:#ae81ff">3</span>], o[<span style="color:#ae81ff">4</span>], o[<span style="color:#ae81ff">5</span>]))
+</span></span><span style="display:flex;"><span>    cur<span style="color:#f92672">.</span>executemany(<span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        INSERT INTO ohlcv_5m (exchange, symbol, timestamp, open, high, low, close, volume)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        VALUES (</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">,</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">,</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">,</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">,</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">,</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">,</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">,</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        ON CONFLICT (exchange, symbol, timestamp) DO NOTHING
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>, rows)
+</span></span><span style="display:flex;"><span>    conn<span style="color:#f92672">.</span>commit(); cur<span style="color:#f92672">.</span>close(); conn<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ... (detect_price_anomaly, check_arbitrage, write_market_snapshot)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Full source in GitHub repo — link at bottom.</span>
+</span></span></code></pre></div><h3 id="core-upgrades-vs-part-2-basic-version">Core Upgrades (vs. Part 2 basic version)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Feature</th>
+          <th style="text-align: left">Part 2</th>
+          <th style="text-align: left">Part 3</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Data Sources</td>
+          <td style="text-align: left">Kraken only</td>
+          <td style="text-align: left">Kraken + Coinbase</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Storage</td>
+          <td style="text-align: left">Redis only</td>
+          <td style="text-align: left">Redis + PostgreSQL</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Candles</td>
+          <td style="text-align: left">❌</td>
+          <td style="text-align: left">✅ OHLCV (5m / 1h)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Anomaly Detection</td>
+          <td style="text-align: left">❌</td>
+          <td style="text-align: left">✅ ±5% alerts</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Arbitrage Scanning</td>
+          <td style="text-align: left">❌</td>
+          <td style="text-align: left">✅ &gt;0.5% spread flag</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Obsidian Snapshots</td>
+          <td style="text-align: left">❌</td>
+          <td style="text-align: left">✅ Daily markdown</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">CLI</td>
+          <td style="text-align: left">No args</td>
+          <td style="text-align: left">Full argparse</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="part-4-openclaw-cron--247-automation">Part 4: OpenClaw Cron — 24/7 Automation</h2>
+<p>Code is written. But running <code>python collector.py</code> manually is not automation. You need a scheduler.</p>
+<p>Traditional solution: Linux crontab. But it has pain points:</p>
+<ul>
+<li>Logs aren&rsquo;t aggregated — dig through <code>/var/log</code> when things break</li>
+<li>No alert integration — things die silently</li>
+<li>Configs scattered everywhere — collaboration nightmare</li>
+</ul>
+<p>OpenClaw Cron bundles scheduling, logging, and alerting in one place:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># openclaw-cron.yaml — Jarvis Data Engine Scheduling</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;Jarvis Ticker (every minute)&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">schedule</span>: <span style="color:#e6db74">&#34;* * * * *&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">command</span>: <span style="color:#e6db74">&#34;cd ~/jarvis-trading &amp;&amp; python src/data/collector.py --all&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">notify_on_error</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;Jarvis OHLCV (every 5 min)&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">schedule</span>: <span style="color:#e6db74">&#34;*/5 * * * *&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">command</span>: <span style="color:#e6db74">&#34;cd ~/jarvis-trading &amp;&amp; python src/data/collector.py --all --snapshot&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">notify_on_error</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;Jarvis Daily Snapshot&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">schedule</span>: <span style="color:#e6db74">&#34;0 0 * * *&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">command</span>: <span style="color:#e6db74">&#34;cd ~/jarvis-trading &amp;&amp; python src/data/collector.py --all --snapshot&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">notify_on_success</span>: <span style="color:#66d9ef">false</span>
+</span></span></code></pre></div><p><strong>Three cadences, three purposes:</strong></p>
+<ol>
+<li><strong>Every-minute ticker</strong> — Lightweight. Pull latest price + 24h data into Redis.</li>
+<li><strong>Every-5-minute OHLCV</strong> — Heavier. Pull candle data + generate snapshot into PostgreSQL.</li>
+<li><strong>Daily midnight snapshot</strong> — Routine archiving. No notifications needed.</li>
+</ol>
+<p>Clear separation of concerns. No blocking.</p>
+<hr>
+<h2 id="part-5-obsidian-integration--turning-data-into-knowledge">Part 5: Obsidian Integration — Turning Data into Knowledge</h2>
+<p>This is my favorite feature.</p>
+<p>Most quant traders have this problem: data flows in, but <strong>nobody ever looks back</strong>. What did the market look like six months ago? How did your strategy perform in that environment? You have no idea.</p>
+<p>Jarvis solves this: <strong>a human-readable market snapshot, generated daily, written into Obsidian</strong>.</p>
+<p>The generated Markdown looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Market Snapshot — 2026-05-23
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Recorded: 2026-05-23 22:00 UTC
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Live Prices
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>| Pair | Exchange | Last | 24h Change | 24h Volume |
+</span></span><span style="display:flex;"><span>|:--|:--|:--|:--|:--|
+</span></span><span style="display:flex;"><span>| BTC/USD | kraken | $97,231.40 | 📈 +2.34% | 12,456,789 |
+</span></span><span style="display:flex;"><span>| BTC/USD | coinbase | $97,150.00 | 📈 +2.28% | 10,234,567 |
+</span></span><span style="display:flex;"><span>| ETH/USD | kraken | $3,847.20 | 📉 -1.12% | 8,765,432 |
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Anomaly Alerts
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(Price anomalies auto-logged here)
+</span></span></code></pre></div><p>The value of this snapshot:</p>
+<ol>
+<li><strong>Retrospective review</strong> — Want to know &ldquo;what was BTC at 3 months ago?&rdquo; Search Obsidian, answer in seconds.</li>
+<li><strong>Bidirectional linking</strong> — Link your trading strategy notes and learning notes together.</li>
+<li><strong>Zero cost</strong> — One line of code to generate, fully automatic storage.</li>
+</ol>
+<hr>
+<h2 id="part-6-the-notebooklm-knowledge-lever--mastering-any-data-source-in-one-hour">Part 6: The NotebookLM Knowledge Lever — Mastering Any Data Source in One Hour</h2>
+<p>This section draws from <em>Cola AI Lab</em> videos 20 and 21 — using NotebookLM as a knowledge lever.</p>
+<p>The data engine currently connects Kraken and Coinbase. But what about Binance, OKX, Bybit? Or on-chain data from Dune Analytics? Each exchange has hundreds of pages of API documentation. You can&rsquo;t read them all.</p>
+<p>The correct approach:</p>
+<pre tabindex="0"><code>Step 1: Gather sources (5 min)
+    → Google &#34;exchange name API documentation&#34;
+    → Find official docs
+    → Find 3-5 related YouTube tutorials + GitHub projects
+
+Step 2: Drop into NotebookLM (2 min)
+    → Import all links, PDFs, YouTube links
+    → 42 knowledge sources isn&#39;t enough? Delete old, add new.
+
+Step 3: Generate mind map (1 min)
+    → Click one button for API knowledge structure
+    → Core concepts, auth methods, rate limits at a glance
+
+Step 4: Generate quickstart report (2 min)
+    → &#34;How to connect Exchange X and pull BTC price using Python&#34;
+    → AI extracts complete code template from your sources
+
+Step 5: CEO mode — ask targeted questions (5 min)
+    → &#34;How does this exchange&#39;s API differ from Kraken?&#34;
+    → &#34;What pitfalls should I watch for when connecting?&#34;
+    → &#34;How do rate limits affect my strategy?&#34;
+
+Total: 15 minutes to master a new data source.
+</code></pre><p><strong>This is knowledge leverage.</strong> Your time isn&rsquo;t spent on &ldquo;learning tech&rdquo; — it&rsquo;s spent on &ldquo;making judgments.&rdquo;</p>
+<p>In practice, every time I connect a new data source, I generate a dedicated NotebookLM notebook and store it in my knowledge base for future reference. All technical questions are outsourced to AI. I only think about: &ldquo;What opportunity can this data source help me discover?&rdquo;</p>
+<hr>
+<h2 id="part-7-why-the-data-engine-is-your-core-moat">Part 7: Why the Data Engine Is Your Core Moat</h2>
+<p>People think &ldquo;it&rsquo;s just pulling an API, what&rsquo;s so hard about that?&rdquo;</p>
+<p>The data engine has three underestimated challenges:</p>
+<h3 id="challenge-1-data-quality">Challenge 1: Data Quality</h3>
+<p>Exchange public APIs weren&rsquo;t built for quant trading. Disconnections, packet loss, latency, and data misalignment are the norm.</p>
+<p>Kraken&rsquo;s <code>percentage</code> field is sometimes <code>None</code>. Coinbase&rsquo;s <code>bid/ask</code> occasionally exceeds the last price. If you don&rsquo;t handle these edge cases, your strategy gets misled by dirty data.</p>
+<p><strong>Garbage in, garbage out.</strong> Data cleaning code is often 3x the volume of collection code.</p>
+<h3 id="challenge-2-clock-synchronization">Challenge 2: Clock Synchronization</h3>
+<p>Kraken and Coinbase&rsquo;s server clocks can differ by 1-2 seconds. For cross-exchange arbitrage, this 2-second misalignment turns an &ldquo;arbitrage opportunity&rdquo; into an &ldquo;arbitrage trap&rdquo; — the spread you see doesn&rsquo;t actually exist, it&rsquo;s just unsynchronized timestamps.</p>
+<p>Jarvis uses UTC timestamps uniformly, with time correction at the strategy layer.</p>
+<h3 id="challenge-3-api-changes">Challenge 3: API Changes</h3>
+<p>Exchange APIs change constantly. Kraken modified their WebSocket interface 3 times in the first half of this year. Coinbase Advanced Trade and Coinbase Pro are completely different APIs.</p>
+<p><strong>This is why the data collection layer must be modular</strong> — one independent collector function per exchange. Changing one never breaks another.</p>
+<hr>
+<h2 id="part-8-hands-on--connecting-a-new-exchange-from-scratch">Part 8: Hands-On — Connecting a New Exchange From Scratch</h2>
+<p>Say you want to add Bybit. Traditional approach:</p>
+<pre tabindex="0"><code>Read docs (2h) → Sign up (30m) → Apply API Key (15m)
+→ Test sandbox (1h) → Production debug (2h) → Add to collector (30m)
+Total: 6+ hours
+</code></pre><p>NotebookLM + AI approach:</p>
+<pre tabindex="0"><code>1. Drop Bybit API docs URL into NotebookLM, generate structure (5m)
+2. Ask AI: &#34;How does this differ from Kraken&#39;s API?&#34; (2m)
+3. Ask AI to directly generate the collector function (3m)
+4. Copy, paste, run it, see what errors come up (2m)
+5. Feed errors back to AI for fixes (3m)
+Total: 15 minutes
+</code></pre><p><strong>24x efficiency gain.</strong></p>
+<p>This is the new &ldquo;how to do things&rdquo; in the AI era — no more pre-studying. Learn by doing.</p>
+<hr>
+<h2 id="part-9-summary--data-is-more-than-data">Part 9: Summary — Data Is More Than Data</h2>
+<p>Bloomberg Terminal doesn&rsquo;t sell data. It sells <strong>information processing capability</strong>.</p>
+<p>The AI-era personal Bloomberg terminal is more than pulling data. It&rsquo;s:</p>
+<ol>
+<li><strong>Auto-collection</strong> — 24/7, no gaps</li>
+<li><strong>Intelligent cleaning</strong> — anomaly detection + multi-source validation</li>
+<li><strong>Structured storage</strong> — hot data in Redis, cold data in PostgreSQL</li>
+<li><strong>Human-readable</strong> — daily Obsidian snapshots, instant retrospection</li>
+<li><strong>Arbitrage discovery</strong> — automatic cross-exchange spread scanning</li>
+</ol>
+<p>All of this costs <strong>$0</strong> (except your local electricity).</p>
+<p>But the value is infinite — because a good data engine lets you see what others can&rsquo;t.</p>
+<hr>
+<h2 id="coming-up-part-4">Coming Up: Part 4</h2>
+<p><em>&ldquo;Trading Strategies Aren&rsquo;t Gut Feelings — From Intuition to PRD&rdquo;</em></p>
+<p>We&rsquo;ll use:</p>
+<ul>
+<li>Natural language intuition → AI translates to quant logic</li>
+<li>Deep Research to pull academic finance models</li>
+<li>NotebookLM for knowledge synthesis</li>
+<li>Generate PRD document → Claude Code development</li>
+</ul>
+<p>Turn your &ldquo;I think&rdquo; into &ldquo;mathematically proven.&rdquo;</p>
+<hr>
+<p><em>This series is based on Cola AI Lab&rsquo;s quantitative trading research. All code is open source. This is not investment advice.</em></p>
+<hr>
+<blockquote>
+<p>💬 Is your data engine running? Questions? Share below.</p>
+</blockquote>
+<p><strong>Series Index:</strong></p>
+<ol>
+<li>✅ Spot vs. Contracts — The Brutal Math</li>
+<li>✅ One-Click Environment Setup</li>
+<li>✅ <strong>This Post</strong> — Free APIs + AI = Your Bloomberg Terminal</li>
+<li>🔜 Trading Strategies Aren&rsquo;t Gut Feelings</li>
+<li>🔜 Backtests That Look Perfect, Live Accounts That Bleed</li>
+</ol>
+]]></content:encoded></item></channel></rss>
