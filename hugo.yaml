@@ -23,11 +23,26 @@ languages:
     weight: 2
     title: "最佳工具测评 2026"
     params:
-      description: "SaaS、主机、预测市场平台的真实测评"
+      description: "SaaS、主机、预测市场平台的真实测评 — 亲身测试，不是纸上谈兵。"
       homeInfoParams:
-        Title: "最佳工具测评 2026"
-        Content: >
-          SaaS工具、主机服务、预测市场平台的诚实测评。亲身测试，不是纸上谈兵。
+        Title: "📊 最佳工具测评 2026"
+        Content: |
+          **SaaS工具、预测市场平台的诚实测评。** 亲身测试，不是纸上谈兵。
+          
+          ---
+          
+          ### 📰 最新文章
+          
+          **🟢 GEO（生成式引擎优化）系列**
+          · [第1期：什么是GEO？为什么2026年不做GEO就晚了？](/zh/posts/geo-series-1/)
+          · [第2期：2026 GEO市场格局与玩家图谱](/zh/posts/geo-series-2/)
+          · [第3期：B2B品牌出海推广2026 — 当AI开始替采购商做决定](/zh/posts/geo-series-3/)
+          · [第4期 — 即将发布]
+          
+          **🔮 预测市场**
+          · [Kalshi 评测 2026：我实测了CFTC监管的预测市场平台](/zh/posts/kalshi-review-2026/)
+          
+          [📂 查看全部文章 →](/zh/posts/)
 
   zht:
     label: "繁體中文"
@@ -35,15 +50,31 @@ languages:
     weight: 3
     title: "最佳工具評測 2026"
     params:
-      description: "SaaS、主機、預測市場平台的真實評測"
+      description: "SaaS、主機、預測市場平台的真實評測 — 親身測試，不是紙上談兵。"
       homeInfoParams:
-        Title: "最佳工具評測 2026"
-        Content: >
-          SaaS工具、主機服務、預測市場平台的誠實評測。親身測試，不是紙上談兵。
+        Title: "📊 最佳工具評測 2026"
+        Content: |
+          **SaaS工具、預測市場平台的誠實評測。** 親身測試，不是紙上談兵。
+          
+          ---
+          
+          ### 📰 最新文章
+          
+          **🟢 GEO（生成式引擎最佳化）系列**
+          · [第1期：什麼是GEO？為什麼2026年不做GEO就晚了？](/zht/posts/geo-series-1/)
+          · [第2期：2026 GEO市場格局與玩家圖譜](/zht/posts/geo-series-2/)
+          · [第3期：B2B品牌出海推廣2026 — 當AI開始替採購商做決定](/zht/posts/geo-series-3/)
+          · [第4期 — 即將發布]
+          
+          **🔮 預測市場**
+          · [Kalshi 評測 2026：我實測了CFTC監管的預測市場平台](/zht/posts/kalshi-review-2026/)
+          
+          [📂 查看全部文章 →](/zht/posts/)
 
 params:
   env: production
   author: "Dinnar Reviews"
+  paginate: 10
   ShowReadingTime: true
   ShowShareButtons: true
   ShowPostNavLinks: true
