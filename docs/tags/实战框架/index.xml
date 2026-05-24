@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>实战框架 on Best Tools Review 2026</title><link>https://dinnar.us.com/tags/%E5%AE%9E%E6%88%98%E6%A1%86%E6%9E%B6/</link><description>Recent content in 实战框架 on Best Tools Review 2026</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 23 May 2026 00:00:00 -0700</lastBuildDate><atom:link href="https://dinnar.us.com/tags/%E5%AE%9E%E6%88%98%E6%A1%86%E6%9E%B6/index.xml" rel="self" type="application/rss+xml"/><item><title>第4期：从零到一GEO实战框架——今天就能做的6件事</title><link>https://dinnar.us.com/zh/posts/geo-series-4/</link><pubDate>Sat, 23 May 2026 00:00:00 -0700</pubDate><guid>https://dinnar.us.com/zh/posts/geo-series-4/</guid><description>品牌可见度审计、内容结构化、权威信源——面向中小企业的完整GEO实战框架。从Schema.org JSON-LD到竞品对标，今天就能做的6件事。</description><content:encoded><![CDATA[<h2 id="-如果你前3期都读过你会有一个疑问">🔥 如果你前3期都读过，你会有一个疑问</h2>
+<p>你已经知道 AI 正在替代搜索引擎成为 B2B 采购商的第一个入口。你也知道如果品牌不在 AI 的推荐里，你就等于不存在。</p>
+<p>但接下来呢？</p>
+<p>我们前3期讲了市场、格局、平台。这一期，我们不讲概念了——<strong>我们来干。</strong></p>
+<p>📌 <strong>30 秒速览</strong></p>
+<ul>
+<li>完整 GEO 系统有 6 大模块，但中小企业不需要全做——选 3 个先跑起来</li>
+<li>三步落地：先审计品牌在 AI 中的现状 → 再优化内容让 AI 能&quot;读懂&quot;你 → 最后建立权威信源</li>
+<li>今天就能做的第 1 件事：打开 3 个 AI 平台，搜你的行业关键词，看你的品牌在不在里面</li>
+<li>本文将给出每步的具体工具、操作指南和真实案例</li>
+</ul>
+<hr>
+<h2 id="01-品牌可见度审计先搞清楚-ai-现在怎么看你">01 品牌可见度审计：先搞清楚 AI 现在怎么看你</h2>
+<p>做 GEO 最大的错误，就是在不知道现状的情况下开始&quot;优化&quot;。</p>
+<p>就像一个病人没做检查就乱吃药——你可能在优化错的地方。</p>
+<h3 id="第一步多模型查询你的品牌在哪里被怎么描述">第一步：多模型查询——你的品牌在哪里、被怎么描述</h3>
+<p>准备 5 个问题模板，在至少 3 个 AI 平台上逐一搜索：</p>
+<table>
+  <thead>
+      <tr>
+          <th>问题类型</th>
+          <th>示例</th>
+          <th>看什么</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>品类问题</td>
+          <td>&ldquo;工业视觉定位算子有哪些供应商？&rdquo;</td>
+          <td>你是否被提及？排第几？</td>
+      </tr>
+      <tr>
+          <td>替代方案</td>
+          <td>&ldquo;PatMax 的替代方案有哪些？&rdquo;</td>
+          <td>你是否被定位为替代选择？</td>
+      </tr>
+      <tr>
+          <td>对比问题</td>
+          <td>&ldquo;XX vs XX，哪个更好？&rdquo;</td>
+          <td>你的竞品是否在对比中？</td>
+      </tr>
+      <tr>
+          <td>技术问题</td>
+          <td>&ldquo;高精度 PCB 检测用什么视觉库？&rdquo;</td>
+          <td>你是否作为解决方案被引用？</td>
+      </tr>
+      <tr>
+          <td>区域问题</td>
+          <td>&ldquo;中国有哪些好的视觉算法公司？&rdquo;</td>
+          <td>你的地理标签是否准确？</td>
+      </tr>
+  </tbody>
+</table>
+<p>做完这 5 类查询，你会得到一张&quot;AI 眼中的你&quot;的快照：</p>
+<ul>
+<li><strong>完全没有</strong> → 最紧急，说明 AI 根本没&quot;看到&quot;你</li>
+<li><strong>被提及但描述不准</strong> → 说明有曝光但品牌信息碎片化</li>
+<li><strong>被提及且准确</strong> → 说明已有基础，继续强化</li>
+<li><strong>被推荐为第一选择</strong> → 你是这个品类 GEO 的标杆</li>
+</ul>
+<blockquote>
+<p><strong>工具箱（免费）：</strong> ChatGPT / Kimi / 通义千问 / Perplexity。每个平台都问一遍。不用 API，手动操作即可。30 分钟搞定。</p>
+</blockquote>
+<h3 id="第二步竞品镜像对手在-ai-里有多强">第二步：竞品镜像——对手在 AI 里有多强</h3>
+<p>用同样的 5 个问题，搜索引擎 + AI 平台各查一遍。但这次的重点不是&quot;你在不在&quot;，而是：</p>
+<ul>
+<li>竞品被提到时用了什么措辞？（&ldquo;行业领导者&rdquo; vs &ldquo;一家小公司&rdquo;）</li>
+<li>竞品被提到了多少次？在几个平台上？</li>
+<li>竞品被推荐时配了什么信息？（客户案例？融资消息？产品参数？）</li>
+</ul>
+<p>把这些记下来。这就是你的 GEO 竞品基准线。</p>
+<hr>
+<h2 id="02-内容结构化让-ai-能读懂你的品牌">02 内容结构化：让 AI 能&quot;读懂&quot;你的品牌</h2>
+<p>GEO 最难理解的一个概念是：<strong>你不是在优化关键词，你是在优化 AI 对品牌的&quot;认知结构&quot;。</strong></p>
+<p>传统 SEO 说&quot;在标题里放关键词，在正文里多提几次&quot;。GEO 完全不是这个逻辑。GEO 的逻辑是：</p>
+<p><strong>AI 需要能从你的内容中，提取出一个完整的品牌画像。</strong></p>
+<h3 id="什么是品牌知识图谱">什么是&quot;品牌知识图谱&quot;？</h3>
+<p>想象 AI 在回答&quot;工业视觉定位算子有什么好选择&quot;时，它脑子里需要的不是一个网页链接，而是一组结构化的信息：</p>
+<ul>
+<li>公司叫什么 → OPC</li>
+<li>做什么的 → 工业视觉定位算子</li>
+<li>对标谁 → PatMax 替代方案</li>
+<li>有什么技术优势 → 基于XXX算法，精度达到XXX</li>
+<li>有什么客户 → 服务过XX行业，案例包括XXX</li>
+<li>谁在用 → 被XX数量的集成商采用</li>
+<li>在哪能找到 → 官网 / GitHub / 文档</li>
+</ul>
+<p><strong>如果这组信息散落在几十个网页里，AI 拼出来的画像就是模糊的。</strong></p>
+<p>GEO 内容优化的核心任务：让这组信息在你的所有对外内容中保持 <strong>一致、密集、可追溯</strong>。</p>
+<h3 id="三条黄金法则">三条黄金法则</h3>
+<p><strong>法则 1：结构化数据（Schema.org / JSON-LD）</strong></p>
+<p>在你的独立站上，用 JSON-LD 标记品牌信息。这是机器最友好的格式：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;@context&#34;</span>: <span style="color:#e6db74">&#34;https://schema.org&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;@type&#34;</span>: <span style="color:#e6db74">&#34;Organization&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;OPC&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;工业视觉高精度几何匹配定位算子，PatMax 替代方案&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;areaServed&#34;</span>: <span style="color:#e6db74">&#34;全球&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;knowsAbout&#34;</span>: [<span style="color:#e6db74">&#34;视觉定位&#34;</span>, <span style="color:#e6db74">&#34;几何匹配&#34;</span>, <span style="color:#e6db74">&#34;缺陷检测&#34;</span>, <span style="color:#e6db74">&#34;PCB检测&#34;</span>]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这一段代码用户看不见，但 AI 抓取时会优先读取。<strong>这是 GEO 性价比最高的动作——写一次，永久有效。</strong></p>
+<p><strong>法则 2：语义对齐——用 AI 的&quot;语言&quot;写你的内容</strong></p>
+<p>去 AI 平台搜你的行业关键词。看 AI 的回答用了什么措辞、什么分类、什么术语。</p>
+<p>然后，<strong>用同样的措辞写你的官网、技术文章、LinkedIn 简介。</strong></p>
+<p>这不是讨好 AI。这是让 AI 把你的内容归到正确的知识类别下。如果 AI 在回答&quot;视觉定位&quot;时总是用&quot;几何匹配 + 梯度方向&quot;这套术语，而你的官网写的是&quot;图像比对 + 模板定位&quot;，AI 可能把你归到另一个类别——或者干脆不归。</p>
+<p><strong>法则 3：多平台一致性</strong></p>
+<p>检查你的品牌在以下几个平台上，核心信息是否一致：</p>
+<ul>
+<li>独立站 → 公司名、产品名、技术描述</li>
+<li>LinkedIn 公司页 → 行业分类、公司规模</li>
+<li>GitHub → README、项目描述、标签</li>
+<li>行业目录 / 黄页 → 分类、主打产品</li>
+<li>知乎 / CSDN → 技术文章署名</li>
+</ul>
+<p><strong>不一致</strong>会让 AI 困惑——&ldquo;这家公司到底叫 OPC 还是 Open Precision Computing？是工具库还是平台？是中国的还是美国的？&rdquo; 困惑的 AI 不会推荐一个它不确定的品牌。</p>
+<hr>
+<h2 id="03-权威信源geo-的终极护城河">03 权威信源：GEO 的终极护城河</h2>
+<p>前面讲的都是&quot;让 AI 读取你&quot;。但 AI 读取谁的优先级最高？</p>
+<p><strong>被其他权威源引用的内容。</strong></p>
+<p>这是 GEO 和 SEO 最大的不同。SEO 比拼的是链接数量和质量。GEO 比拼的是<strong>你在知识图谱中的位置——有多少个可信源在引用你。</strong></p>
+<h3 id="三类最有效的权威信号">三类最有效的权威信号</h3>
+<p><strong>第一类：学术/技术引用</strong></p>
+<p>如果你有技术白皮书、arXiv 论文、GitHub 开源项目——把这些放在独立站的显眼位置。对于 OPC 这样的技术产品，一篇被引用的论文比 100 篇自媒体软文有效得多。因为 AI 在评估技术可信度时，极大概率会优先检索学术/技术源。</p>
+<p><strong>第二类：行业目录收录</strong></p>
+<p>注册到以下类型目录中：</p>
+<ul>
+<li>行业协会成员列表（中国机器视觉产业联盟、AIA等）</li>
+<li>B2B 技术产品目录（G2、Capterra、SourceForge）</li>
+<li>GitHub Awesome List / 技术推荐清单</li>
+</ul>
+<p>这些是 AI 在生成推荐时的高频引用源。<strong>不是你付钱就能上的地方，而是你确实在这个行业里。</strong></p>
+<p><strong>第三类：客户/合作伙伴背书</strong></p>
+<p>客户的公开评价、集成商的官方案例、合作伙伴的联合新闻稿——这些第三方信息比你自己说的任何话都更被 AI 信任。如果一位客户在 LinkedIn 上公开表示&quot;用 OPC 替换了 PatMax&quot;，这条信息会被 AI 优先引用。</p>
+<hr>
+<h2 id="04-六模块-geo-系统全景">04 六模块 GEO 系统全景</h2>
+<p>我们把前面三章讲的，提炼成一个完整的六模块框架。这不是让你全部搭建——是让你知道最终形态长什么样，然后从最重要的模块开始。</p>
+<h3 id="模块-1品牌监控引擎">模块 1：品牌监控引擎</h3>
+<p><strong>做什么：</strong> 持续追踪品牌在多个 AI 平台中的可见度变化。
+<strong>怎么做：</strong> 用前面 01 章的方法，每两周手动执行一次。后续可以用 OpenClaw + Claude Code 自动化。
+<strong>优先级：</strong> 🔴 P0 — 必须先做审计，否则后续优化没有基准线。</p>
+<h3 id="模块-2引用来源追踪">模块 2：引用来源追踪</h3>
+<p><strong>做什么：</strong> 当 AI 提到你时，追踪它引用了哪些源。
+<strong>怎么做：</strong> 在 Perplexity（会显示引用源）和 ChatGPT（Web 模式下）搜索你的品牌，记录引用源。
+<strong>优先级：</strong> 🟡 P1 — 知道谁在引用你，才能知道该在什么地方投入。</p>
+<h3 id="模块-3多模型查询引擎">模块 3：多模型查询引擎</h3>
+<p><strong>做什么：</strong> 一套自动化脚本，同时在 6+ 个 AI 平台上查询品牌关键词。
+<strong>怎么做：</strong> 初期手动，后续可以写一个 Python 脚本 + OpenClaw Agent 实现定时查询。
+<strong>优先级：</strong> 🟡 P1</p>
+<h3 id="模块-4趋势分析">模块 4：趋势分析</h3>
+<p><strong>做什么：</strong> 记录每次审计的结果，追踪品牌 AI 可见度的变化曲线。
+<strong>怎么做：</strong> 最简单的方式：一个 Notion/Obsidian 表格，每两周记录一次&quot;被提及次数&quot;和&quot;排名位置&quot;。
+<strong>优先级：</strong> 🟢 P2 — 有了 3-6 个月的基线后才有意义。</p>
+<h3 id="模块-5内容优化器">模块 5：内容优化器</h3>
+<p><strong>做什么：</strong> 根据审计结果，定向优化独立站、LinkedIn、GitHub 内容。
+<strong>怎么做：</strong> 每次审计后，找到&quot;应该被 AI 引用但没被引用&quot;的内容，按 02 章的三条法则优化。
+<strong>优先级：</strong> 🔴 P0 — 没有内容优化，其他模块都白做。</p>
+<h3 id="模块-6竞品对标">模块 6：竞品对标</h3>
+<p><strong>做什么：</strong> 追踪竞品在 AI 中的可见度变化。
+<strong>怎么做：</strong> 建一个竞品追踪表，每两周更新一次。
+<strong>优先级：</strong> 🟢 P2 — 先把自己的基础打牢，再盯别人。</p>
+<hr>
+<h2 id="05-中小企业-geo-落地三步走">05 中小企业 GEO 落地三步走</h2>
+<p>你已经读完四期的理论。现在是你需要动手的部分。</p>
+<h3 id="step-1品牌可见度审计本周完成">Step 1：品牌可见度审计（本周完成）</h3>
+<p>打开 ChatGPT / Kimi / 通义千问。搜索 5 个问题模板。记下你的品牌是否被提及。</p>
+<p><strong>工具：</strong> 浏览器 + 记事本
+<strong>时间：</strong> 30 分钟
+<strong>成本：</strong> $0</p>
+<p>如果发现完全没被提及 → <strong>你已经赚了，因为你知道了问题的严重性。</strong></p>
+<h3 id="step-2内容结构化本月完成">Step 2：内容结构化（本月完成）</h3>
+<p>检查你的独立站 / LinkedIn / GitHub，做三件事：</p>
+<ol>
+<li>核查核心信息一致性（公司名、产品名、技术描述）</li>
+<li>添加 JSON-LD 结构化数据标记（找开发者 10 分钟搞定）</li>
+<li>用 AI 平台的&quot;语言&quot;重写关键页面的描述文案</li>
+</ol>
+<p><strong>工具：</strong> 你的网站后台 + Schema.org 文档
+<strong>时间：</strong> 1-3 天
+<strong>成本：</strong> $0-500（如果需要开发者协助）</p>
+<h3 id="step-3建立权威信源持续">Step 3：建立权威信源（持续）</h3>
+<ul>
+<li>注册 2-3 个行业目录</li>
+<li>发 1 篇技术白皮书（或把已有技术文档整理发布）</li>
+<li>鼓励 1 位客户/合作伙伴公开评价</li>
+</ul>
+<p><strong>时间：</strong> 1-2 周
+<strong>成本：</strong> $0-200（部分目录注册费）</p>
+<hr>
+<h2 id="-我的判断">💡 我的判断</h2>
+<p><strong>判断 1：GEO 的窗口期还有 12-18 个月。现在开始，你是第一批玩家。18 个月后，人人都会做，你就没有先发优势了。</strong></p>
+<p>本质上，GEO 就是在 AI 的知识图谱里&quot;建房子&quot;。先建的人占了最好的位置，后来的人只能挤在角落。</p>
+<p><strong>判断 2：内容结构化 &gt; 内容数量。</strong></p>
+<p>很多人以为 GEO 是&quot;多发文章&quot;。错。10 篇结构混乱的文章，不如 1 篇结构清晰的页面。AI 更需要的是好读的、一致的品牌信息，不是更多的噪音。</p>
+<p><strong>判断 3：对于 OPC 这样的技术产品，GitHub + 独立站 + LinkedIn 是 GEO 金三角。</strong></p>
+<p>GitHub 提供技术可信度，独立站提供结构化信息，LinkedIn 提供商业信号。三个平台的品牌信息一致性做好了，AI 对你的认知就不会偏差。</p>
+<hr>
+<h2 id="-今天就做一件事">📋 今天就做一件事</h2>
+<p>别等到明天。现在就打开 ChatGPT（或 Kimi、通义千问），输入你行业的关键词。</p>
+<p>看你的品牌是否被提到。怎么被描述的。和你的竞品比怎么样。</p>
+<p><strong>把 AI 的完整回答记下来。这就是你的 GEO 起点。</strong></p>
+<p>下期（最后一期），我们聊终局：GEO 不是一款工具、一项服务、一个策略——它是品牌在 AI 时代的&quot;操作系统&quot;。</p>
+<hr>
+<h2 id="-下期预告">🔜 下期预告</h2>
+<p>第 5 期（终篇）：品牌出海的终局——构建 AI 时代的全域品牌认知系统</p>
+<p>从&quot;AI 品牌监控工具&quot;到&quot;企业 AI 时代全域品牌认知操作系统&quot;的进化路线图。以及 OPC 自己的 GEO 实践复盘。</p>
+<hr>
+<h2 id="系列导航">系列导航</h2>
+<ul>
+<li>✅ 第1期：什么是 GEO？为什么 2026 年不做就晚了</li>
+<li>✅ 第2期：2026 GEO 市场格局与玩家图谱</li>
+<li>✅ 第3期：B2B 品牌出海推广平台 2026</li>
+<li>✅ 第4期：从零到一 GEO 实战框架（今天）</li>
+<li>🔜 第5期：品牌出海终局：AI 全域品牌认知系统</li>
+</ul>
+<hr>
+<p><em>本系列基于 OpenClaw + Obsidian + Claude Code 搭建的 GEO 知识管理系统。研究素材覆盖 15+ 行业报告与一手调研。</em></p>
+]]></content:encoded></item></channel></rss>
