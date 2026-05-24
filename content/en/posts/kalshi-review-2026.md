@@ -64,6 +64,10 @@ Kalshi's main interface is clean and intuitive. Here's what the category view lo
 And the Election markets page, showing political event contracts:
 
 ![Kalshi Election Markets](/images/kalshi-elections.png)
+
+Here's a real market detail page — this was a live Trump impeachment contract showing the YES/NO pricing, price chart, and order placement interface:
+
+![Kalshi Market Detail — Trump Impeachment](/images/kalshi-market-impeach.png)
 The web interface is clean and functional. The main dashboard shows featured markets, your positions, and a market list you can filter by category. Order placement is straightforward: choose your side (YES/NO), set contract count and limit price, and submit.
 
 The order book view is serviceable but not as rich as what you'd find on a traditional brokerage. You can see bid/ask spreads, recent trades, and depth — enough to make informed decisions, but market data nerds will want to use the API.
@@ -92,6 +96,8 @@ This is one of Kalshi's strongest selling points:
 | Fee Type | Cost |
 |---|---|
 | Trading fees | **$0** on most markets |
+
+![Kalshi Fee Schedule — Zero Trading Fees on Most Markets](/images/kalshi-fees-table.png)
 | Deposit (ACH) | **Free** |
 | Withdrawal (ACH) | **Free** |
 | Inactivity fee | **None** |

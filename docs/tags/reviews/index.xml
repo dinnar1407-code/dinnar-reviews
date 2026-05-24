@@ -98,7 +98,9 @@
 <p>Kalshi&rsquo;s main interface is clean and intuitive. Here&rsquo;s what the category view looks like — note the clear navigation across Elections, Politics, Crypto, Climate, and more:</p>
 <p><img alt="Kalshi Crypto Markets" loading="lazy" src="/images/kalshi-crypto.png"></p>
 <p>And the Election markets page, showing political event contracts:</p>
-<p><img alt="Kalshi Election Markets" loading="lazy" src="/images/kalshi-elections.png">
+<p><img alt="Kalshi Election Markets" loading="lazy" src="/images/kalshi-elections.png"></p>
+<p>Here&rsquo;s a real market detail page — this was a live Trump impeachment contract showing the YES/NO pricing, price chart, and order placement interface:</p>
+<p><img alt="Kalshi Market Detail — Trump Impeachment" loading="lazy" src="/images/kalshi-market-impeach.png">
 The web interface is clean and functional. The main dashboard shows featured markets, your positions, and a market list you can filter by category. Order placement is straightforward: choose your side (YES/NO), set contract count and limit price, and submit.</p>
 <p>The order book view is serviceable but not as rich as what you&rsquo;d find on a traditional brokerage. You can see bid/ask spreads, recent trades, and depth — enough to make informed decisions, but market data nerds will want to use the API.</p>
 <h3 id="mobile-app">Mobile App</h3>
@@ -128,24 +130,13 @@ The web interface is clean and functional. The main dashboard shows featured mar
           <td>Trading fees</td>
           <td><strong>$0</strong> on most markets</td>
       </tr>
-      <tr>
-          <td>Deposit (ACH)</td>
-          <td><strong>Free</strong></td>
-      </tr>
-      <tr>
-          <td>Withdrawal (ACH)</td>
-          <td><strong>Free</strong></td>
-      </tr>
-      <tr>
-          <td>Inactivity fee</td>
-          <td><strong>None</strong></td>
-      </tr>
-      <tr>
-          <td>Account minimum</td>
-          <td><strong>None</strong></td>
-      </tr>
   </tbody>
 </table>
+<p><img alt="Kalshi Fee Schedule — Zero Trading Fees on Most Markets" loading="lazy" src="/images/kalshi-fees-table.png">
+| Deposit (ACH) | <strong>Free</strong> |
+| Withdrawal (ACH) | <strong>Free</strong> |
+| Inactivity fee | <strong>None</strong> |
+| Account minimum | <strong>None</strong> |</p>
 <p>You read that right: zero trading commissions on most markets. Kalshi makes money on the spread — the difference between what buyers are willing to pay and what sellers are asking. For highly liquid markets (major political events, popular crypto price targets), the spread is tight — often 1–2 cents. For niche markets, spreads can be wider, which is effectively your &ldquo;cost&rdquo; to trade.</p>
 <p><strong>Deposit note:</strong> Only USD via ACH bank transfer is accepted. No crypto deposits. No credit cards. This is both a pro (regulatory compliance) and a con (slower funding than crypto platforms). If you&rsquo;re used to instant USDC deposits on Polymarket, the 1–2 day ACH delay will feel slow.</p>
 <hr>
@@ -395,6 +386,8 @@ The web interface is clean and functional. The main dashboard shows featured mar
 <p><img alt="Kalshi 加密貨幣市場" loading="lazy" src="/images/kalshi-crypto.png"></p>
 <p>選舉市場頁面，展示政治事件合約：</p>
 <p><img alt="Kalshi 選舉市場" loading="lazy" src="/images/kalshi-elections.png"></p>
+<p>以下是真實的交易市場詳情頁面 — 即時 Trump 彈劾合約，顯示 YES/NO 價格、價格走勢圖和下單界面：</p>
+<p><img alt="Kalshi 市場詳情 — Trump 彈劾" loading="lazy" src="/images/kalshi-market-impeach.png"></p>
 <h3 id="網頁端">網頁端</h3>
 <p>網頁介面乾淨、功能實用。主儀表板顯示推薦市場、你的持倉以及可按類別篩選的市場列表。下單流程簡單明瞭：選擇方向（YES/NO），設定合約數量和限價，然後提交。</p>
 <p>訂單簿視圖夠用，但不如傳統券商那麼豐富。你可以看到買賣價差、最近成交和深度——足以做出明智的決策，但喜歡看市場數據的重度用戶可能需要用 API。</p>
@@ -444,6 +437,7 @@ The web interface is clean and functional. The main dashboard shows featured mar
   </tbody>
 </table>
 <p>你沒看錯：大部分市場零交易佣金。Kalshi 通過買賣價差賺錢——買家願意付的價格和賣家要價之間的差額。對於高流動性市場（重大政治事件、熱門加密貨幣價格目標），點差很窄——通常只有1-2美分。對於小眾市場，點差可能更大，這實際上就是你的「交易成本」。</p>
+<p><img alt="Kalshi 費用表 — 大部分市場零手續費" loading="lazy" src="/images/kalshi-fees-table.png"></p>
 <p><strong>入金提醒：</strong> 只接受美元 ACH 銀行轉帳。不接受加密貨幣入金，也不能用信用卡。這既是優點（監管合規），也是缺點（比加密平台到帳慢）。如果你習慣了 Polymarket 上的即時 USDC 入金，1-2天的 ACH 延遲會讓你覺得慢。</p>
 <hr>
 <h2 id="kalshi-與競品對比">Kalshi 與競品對比</h2>
@@ -692,6 +686,8 @@ The web interface is clean and functional. The main dashboard shows featured mar
 <p><img alt="Kalshi 加密货币市场" loading="lazy" src="/images/kalshi-crypto.png"></p>
 <p>选举市场页面，展示政治事件合约：</p>
 <p><img alt="Kalshi 选举市场" loading="lazy" src="/images/kalshi-elections.png"></p>
+<p>以下是真实的交易市场详情页面 — 实时 Trump 弹劾合约，显示 YES/NO 价格、价格走势图和下单界面：</p>
+<p><img alt="Kalshi 市场详情 — Trump 弹劾" loading="lazy" src="/images/kalshi-market-impeach.png"></p>
 <h3 id="网页端">网页端</h3>
 <p>网页界面干净、功能实用。主仪表板显示推荐市场、你的持仓以及可按类别筛选的市场列表。下单流程简单明了：选择方向（YES/NO），设定合约数量和限价，然后提交。</p>
 <p>订单簿视图够用，但不如传统券商那么丰富。你可以看到买卖价差、最近成交和深度——足以做出明智的决策，但喜欢看市场数据的重度用户可能需要用 API。</p>
@@ -741,6 +737,7 @@ The web interface is clean and functional. The main dashboard shows featured mar
   </tbody>
 </table>
 <p>你没看错：大部分市场零交易佣金。Kalshi 通过买卖价差赚钱——买家愿意付的价格和卖家要价之间的差额。对于高流动性市场（重大政治事件、热门加密货币价格目标），点差很窄——通常只有1-2美分。对于小众市场，点差可能更大，这实际上就是你的&quot;交易成本&rdquo;。</p>
+<p><img alt="Kalshi 费用表 — 大部分市场零手续费" loading="lazy" src="/images/kalshi-fees-table.png"></p>
 <p><strong>入金提醒：</strong> 只接受美元 ACH 银行转账。不接受加密货币入金，也不能用信用卡。这既是优点（监管合规），也是缺点（比加密平台到账慢）。如果你习惯了 Polymarket 上的即时 USDC 入金，1-2天的 ACH 延迟会让你觉得慢。</p>
 <hr>
 <h2 id="kalshi-与竞品对比">Kalshi 与竞品对比</h2>

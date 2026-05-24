@@ -777,7 +777,9 @@ Your GitHub open-source projects → AI classifies you as a technology-driven co
 <p>Kalshi&rsquo;s main interface is clean and intuitive. Here&rsquo;s what the category view looks like — note the clear navigation across Elections, Politics, Crypto, Climate, and more:</p>
 <p><img alt="Kalshi Crypto Markets" loading="lazy" src="/images/kalshi-crypto.png"></p>
 <p>And the Election markets page, showing political event contracts:</p>
-<p><img alt="Kalshi Election Markets" loading="lazy" src="/images/kalshi-elections.png">
+<p><img alt="Kalshi Election Markets" loading="lazy" src="/images/kalshi-elections.png"></p>
+<p>Here&rsquo;s a real market detail page — this was a live Trump impeachment contract showing the YES/NO pricing, price chart, and order placement interface:</p>
+<p><img alt="Kalshi Market Detail — Trump Impeachment" loading="lazy" src="/images/kalshi-market-impeach.png">
 The web interface is clean and functional. The main dashboard shows featured markets, your positions, and a market list you can filter by category. Order placement is straightforward: choose your side (YES/NO), set contract count and limit price, and submit.</p>
 <p>The order book view is serviceable but not as rich as what you&rsquo;d find on a traditional brokerage. You can see bid/ask spreads, recent trades, and depth — enough to make informed decisions, but market data nerds will want to use the API.</p>
 <h3 id="mobile-app">Mobile App</h3>
@@ -807,24 +809,13 @@ The web interface is clean and functional. The main dashboard shows featured mar
           <td>Trading fees</td>
           <td><strong>$0</strong> on most markets</td>
       </tr>
-      <tr>
-          <td>Deposit (ACH)</td>
-          <td><strong>Free</strong></td>
-      </tr>
-      <tr>
-          <td>Withdrawal (ACH)</td>
-          <td><strong>Free</strong></td>
-      </tr>
-      <tr>
-          <td>Inactivity fee</td>
-          <td><strong>None</strong></td>
-      </tr>
-      <tr>
-          <td>Account minimum</td>
-          <td><strong>None</strong></td>
-      </tr>
   </tbody>
 </table>
+<p><img alt="Kalshi Fee Schedule — Zero Trading Fees on Most Markets" loading="lazy" src="/images/kalshi-fees-table.png">
+| Deposit (ACH) | <strong>Free</strong> |
+| Withdrawal (ACH) | <strong>Free</strong> |
+| Inactivity fee | <strong>None</strong> |
+| Account minimum | <strong>None</strong> |</p>
 <p>You read that right: zero trading commissions on most markets. Kalshi makes money on the spread — the difference between what buyers are willing to pay and what sellers are asking. For highly liquid markets (major political events, popular crypto price targets), the spread is tight — often 1–2 cents. For niche markets, spreads can be wider, which is effectively your &ldquo;cost&rdquo; to trade.</p>
 <p><strong>Deposit note:</strong> Only USD via ACH bank transfer is accepted. No crypto deposits. No credit cards. This is both a pro (regulatory compliance) and a con (slower funding than crypto platforms). If you&rsquo;re used to instant USDC deposits on Polymarket, the 1–2 day ACH delay will feel slow.</p>
 <hr>
