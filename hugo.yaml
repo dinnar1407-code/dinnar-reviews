@@ -37,12 +37,13 @@ languages:
           · [第1期：什么是GEO？为什么2026年不做GEO就晚了？](/zh/posts/geo-series-1/)
           · [第2期：2026 GEO市场格局与玩家图谱](/zh/posts/geo-series-2/)
           · [第3期：B2B品牌出海推广2026 — 当AI开始替采购商做决定](/zh/posts/geo-series-3/)
-          · [第4期 — 即将发布]
+          · [第4期：从零到一GEO实战框架 — 今天就能做的6件事](/zh/posts/geo-series-4/)
+          · [第5期：品牌出海终局 — 构建AI时代的全域品牌认知系统](/zh/posts/geo-series-5/)
           
           **🔮 预测市场**
           · [Kalshi 评测 2026：我实测了CFTC监管的预测市场平台](/zh/posts/kalshi-review-2026/)
           
-          [📂 查看全部文章 →](/zh/posts/)
+          [📂 返回首页 →](/zh/)
 
   zht:
     label: "繁體中文"
@@ -64,12 +65,13 @@ languages:
           · [第1期：什麼是GEO？為什麼2026年不做GEO就晚了？](/zht/posts/geo-series-1/)
           · [第2期：2026 GEO市場格局與玩家圖譜](/zht/posts/geo-series-2/)
           · [第3期：B2B品牌出海推廣2026 — 當AI開始替採購商做決定](/zht/posts/geo-series-3/)
-          · [第4期 — 即將發布]
+          · [第4期：從零到一GEO實戰框架 — 今天就能做的6件事](/zht/posts/geo-series-4/)
+          · [第5期：品牌出海終局 — 構建AI時代的全域品牌認知系統](/zht/posts/geo-series-5/)
           
           **🔮 預測市場**
           · [Kalshi 評測 2026：我實測了CFTC監管的預測市場平台](/zht/posts/kalshi-review-2026/)
           
-          [📂 查看全部文章 →](/zht/posts/)
+          [📂 返回首頁 →](/zht/)
 
 params:
   env: production
