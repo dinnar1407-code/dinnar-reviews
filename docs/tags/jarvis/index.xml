@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Jarvis on Best Tools Review 2026</title><link>https://dinnar.us.com/tags/jarvis/</link><description>Recent content in Jarvis on Best Tools Review 2026</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 23 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://dinnar.us.com/tags/jarvis/index.xml" rel="self" type="application/rss+xml"/><item><title>I Let AI Trade Stocks for Me — and Discovered a Brutal Truth</title><link>https://dinnar.us.com/en/posts/jarvis-trading-01-spot-vs-contract/</link><pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate><guid>https://dinnar.us.com/en/posts/jarvis-trading-01-spot-vs-contract/</guid><description>5,000 evolutionary experiments, two fried machines, and one shocking conclusion — the simplest strategy wins.</description><content:encoded><![CDATA[<h2 id="part-1-the-beginning--a-programmers-hubris">Part 1: The Beginning — A Programmer&rsquo;s Hubris</h2>
+<p>Spring 2025. I did what every engineer does — decided I could conquer the financial markets with code.</p>
+<p>I had AI. I had data. I had drive.</p>
+<p>&ldquo;Wall Street is still using Excel spreadsheets, and I&rsquo;m armed with deep reinforcement learning, Transformers, and LSTMs. This is a steamroll.&rdquo;</p>
+<p>Reality gave me a very different answer.</p>
+<hr>
+<h2 id="part-2-5000-evolution-experiments-two-fried-machines">Part 2: 5,000 Evolution Experiments, Two Fried Machines</h2>
+<p>This journey began with a project from <em>Cola AI Lab</em>.</p>
+<p>They made a bold decision: let AI evolve freely in a simulated market. 5,000 random seeds. Different strategies, different parameters, different market conditions. Two machines ran for two solid months, fans screaming, GPUs glowing.</p>
+<p>The result?</p>
+<p><strong>Every single strategy that allowed shorting and leverage lost money.</strong></p>
+<p>Not &ldquo;most.&rdquo; Not &ldquo;95%.&rdquo; <strong>All of them.</strong></p>
+<p>Is the AI too dumb? Is the model not sophisticated enough?</p>
+<p>No. The problem isn&rsquo;t the AI. The problem is <strong>mathematics</strong>.</p>
+<hr>
+<h2 id="part-3-the-mathematical-trap-of-shorting-and-leverage">Part 3: The Mathematical Trap of Shorting and Leverage</h2>
+<p>Consider one scenario:</p>
+<p>You go long BTC. It drops 50%. You have 50% of your capital left. To break even? It needs to rise 100%.</p>
+<p>You short BTC. It rises 50%. <strong>You&rsquo;re liquidated.</strong> Capital: zero. Recovery: impossible.</p>
+<p>This has nothing to do with prediction accuracy. It&rsquo;s about the <strong>asymmetry of mathematical expectation</strong>.</p>
+<p>The longer you hold, the closer your directional accuracy approaches 50%. But in a leveraged market, 50% accuracy isn&rsquo;t enough — you need to be <em>consistently</em> correct, because one large mistake wipes you out completely.</p>
+<blockquote>
+<p><strong>Key insight</strong>: In a leverage + shorting environment, strategy survival doesn&rsquo;t depend on &ldquo;accuracy.&rdquo; It depends on &ldquo;not getting liquidated.&rdquo; This is identical to the Gambler&rsquo;s Ruin problem in probability theory.</p>
+</blockquote>
+<p>In mathematical terms:</p>
+<pre tabindex="0"><code>Spot long:
+  Max loss = -100% (you can only lose what you put in)
+  Risk = price × position × max decline
+
+Short with leverage:
+  Max gain = 100% (if price goes to zero)
+  Max loss = ∞ (price can rise without limit)
+</code></pre><p><strong>Limited upside, unlimited downside.</strong> That&rsquo;s the fundamental logic of shorting.</p>
+<hr>
+<h2 id="part-4-the-simplest-strategy-won">Part 4: The Simplest Strategy Won</h2>
+<p>So out of 5,000 evolutionary experiments, what actually won?</p>
+<p>You might not believe it —</p>
+<p><strong>Spot only. Long only. Hold.</strong></p>
+<p>The numbers:</p>
+<ul>
+<li>Total profit: 156 USDT</li>
+<li>Return: 26%</li>
+<li>Total trades: 176</li>
+<li>Average hold time: 3-7 days</li>
+<li>Win rate: 52.8%</li>
+<li>Max drawdown: 11.3%</li>
+</ul>
+<p>The most surprising part wasn&rsquo;t the returns. It was the <strong>peace of mind</strong>.</p>
+<p>176 trades. Not once did I need to wake up at 3 AM to check the charts. No liquidation anxiety. No self-doubt about stop-losses.</p>
+<blockquote>
+<p>Real alpha isn&rsquo;t in your strategy. It&rsquo;s in your <em>belief</em> in your strategy.</p>
+</blockquote>
+<hr>
+<h2 id="part-5-a-counterintuitive-discovery--delete-the-advanced-data">Part 5: A Counterintuitive Discovery — Delete the &ldquo;Advanced&rdquo; Data</h2>
+<p>During the experiments, there was an even more shocking finding.</p>
+<p>Initially, they fed the AI a full data buffet:</p>
+<ul>
+<li>Candlesticks (1m, 5m, 15m, 1h, 4h, daily)</li>
+<li>MACD, RSI, Bollinger Bands, EMA, ATR</li>
+<li>Volume, fund flows, open interest</li>
+<li>On-chain data, social media sentiment</li>
+</ul>
+<p>The AI&rsquo;s performance? <strong>Coin-flip territory.</strong></p>
+<p>Then they tried something radical: <strong>delete all multi-dimensional candlestick parameters and keep only core mathematical patterns.</strong></p>
+<p>Gone: EMA, MACD, Bollinger Bands.</p>
+<p>Kept: price, volume, volatility.</p>
+<p>The AI&rsquo;s performance immediately improved.</p>
+<p>Why? Because:</p>
+<pre tabindex="0"><code>Information vs. Decision Quality:
+
+          ╱‾‾‾‾‾‾╲
+         ╱         ╲
+        ╱           ╲
+       ╱  Optimal    ╲
+      ╱   Zone       ╲
+─────╯               ╰─────
+Too little             Too much
+information           information
+(blind)              (overload)
+</code></pre><p>Beyond a certain threshold, every extra data dimension adds another layer of noise. Technical indicators are merely derivatives of price — they don&rsquo;t <em>create</em> new information, they just create <strong>the illusion of it</strong>.</p>
+<hr>
+<h2 id="part-6-three-iron-rules">Part 6: Three Iron Rules</h2>
+<p>From all these experiments, the Cola team distilled three iron rules:</p>
+<h3 id="rule-1-simplify-your-data">Rule 1: Simplify Your Data</h3>
+<blockquote>
+<p>If you can use price, don&rsquo;t use indicators. If you can use volume, don&rsquo;t use sentiment. If you can use math, don&rsquo;t use gut feeling.</p>
+</blockquote>
+<p>If your strategy relies on a &ldquo;5-minute MACD golden cross,&rdquo; it&rsquo;s probably unreliable. That &ldquo;golden cross&rdquo; is just a lagging reflection of price.</p>
+<h3 id="rule-2-be-math-driven">Rule 2: Be Math-Driven</h3>
+<blockquote>
+<p>Don&rsquo;t trust stories. Don&rsquo;t trust gut feelings. Don&rsquo;t trust KOLs. Trust mathematical expectation.</p>
+</blockquote>
+<p>Every strategy should be explainable in three lines of Python:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">should_buy</span>(price, volume, volatility):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Rule 2 example: math-based signal</span>
+</span></span><span style="display:flex;"><span>    vol_spike <span style="color:#f92672">=</span> volume <span style="color:#f92672">&gt;</span> volume<span style="color:#f92672">.</span>rolling(<span style="color:#ae81ff">20</span>)<span style="color:#f92672">.</span>mean() <span style="color:#f92672">*</span> <span style="color:#ae81ff">1.5</span>
+</span></span><span style="display:flex;"><span>    price_trend <span style="color:#f92672">=</span> price <span style="color:#f92672">&gt;</span> price<span style="color:#f92672">.</span>rolling(<span style="color:#ae81ff">50</span>)<span style="color:#f92672">.</span>mean()
+</span></span><span style="display:flex;"><span>    low_noise <span style="color:#f92672">=</span> volatility <span style="color:#f92672">&lt;</span> volatility<span style="color:#f92672">.</span>rolling(<span style="color:#ae81ff">100</span>)<span style="color:#f92672">.</span>mean()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> vol_spike <span style="color:#f92672">and</span> price_trend <span style="color:#f92672">and</span> low_noise
+</span></span></code></pre></div><p>If your strategy needs 200 lines to explain, it&rsquo;s not a strategy — it&rsquo;s overfitting.</p>
+<h3 id="rule-3-avoid-information-overload">Rule 3: Avoid Information Overload</h3>
+<blockquote>
+<p>Less is more. Three reliable signals beat thirty noisy ones.</p>
+</blockquote>
+<hr>
+<h2 id="part-7-a-roundtable-with-three-investors">Part 7: A Roundtable with Three &ldquo;Investors&rdquo;</h2>
+<p>After the experiments, we had AI role-play as three legends to debrief.</p>
+<p><strong>Buffett (AI clone) spoke first:</strong></p>
+<p>&ldquo;Young man, you spent two months and burned two machines just to verify what I said sixty years ago — &lsquo;Rule number one: don&rsquo;t lose money. Rule number two: don&rsquo;t forget rule number one.&rsquo; Leverage and shorting are the shortest path to losing money fast. You proved it with 5,000 AI experiments. I&rsquo;m proud. Though you didn&rsquo;t share the electricity bill savings with me. Disappointing.&rdquo;</p>
+<p><strong>Gauss (the Prince of Mathematics) followed:</strong></p>
+<p>&ldquo;From probability theory, this is inevitable. Assuming a 1:1 risk-reward ratio per trade with win probability p, the long-term survival probability is an absorption problem on a Markov chain. With leverage, the absorption boundary (bankruptcy line) is extremely close to the starting point. Any non-zero variance leads to &lsquo;almost sure&rsquo; ruin. In plain language — you will eventually die.&rdquo;</p>
+<p><strong>Naval concluded:</strong></p>
+<p>&ldquo;My favorite strategy isn&rsquo;t the one that makes the most. It&rsquo;s the one that lets me sleep the best. 156 USDT profit, 176 trades, zero chart anxiety — that&rsquo;s real wealth. Wealth isn&rsquo;t a number. It&rsquo;s the freedom to not care about numbers. You&rsquo;ve used AI to validate the power of subtraction. Now scale it.&rdquo;</p>
+<hr>
+<h2 id="part-8-the-truth-is-brutal--and-liberating">Part 8: The Truth Is Brutal — and Liberating</h2>
+<p>The title of this article promised a &ldquo;brutal truth.&rdquo;</p>
+<p>Brutal because you spent two months and serious GPU compute just to prove a simple idea: <strong>not gambling means not losing, and less is more.</strong></p>
+<p>Liberating because you don&rsquo;t need:</p>
+<ul>
+<li>To watch 20 indicators</li>
+<li>To check charts at 3 AM</li>
+<li>To predict tomorrow&rsquo;s direction</li>
+<li>To be smarter than Wall Street</li>
+</ul>
+<p>You only need:</p>
+<ol>
+<li>Spot, long only</li>
+<li>Long-term, no leverage</li>
+<li>Three core data points: price, volume, volatility</li>
+<li>Mathematically verified logic</li>
+</ol>
+<p>That&rsquo;s it.</p>
+<p><strong>The market is always trading uncertainty. True alpha hides in certainty.</strong></p>
+<hr>
+<h2 id="part-9-next-episode">Part 9: Next Episode</h2>
+<p>Next time, we get our hands dirty.</p>
+<p>I&rsquo;ll walk you through building this quant trading system from scratch:</p>
+<ul>
+<li>Python environment + backtesting framework</li>
+<li>Real-time market data feeds</li>
+<li>Core strategy engine architecture</li>
+<li>The first deployable strategy — the one that survived 5,000 evolution rounds</li>
+</ul>
+<p><strong>Open-source code. Real data. Transparent logic.</strong></p>
+<hr>
+<p><em>This series is based on quant trading research from Cola AI Lab. All experimental data comes from public datasets and simulated environments. Trading carries risk. This article does not constitute investment advice.</em></p>
+<hr>
+<blockquote>
+<p>💬 What&rsquo;s your take? Spot or contracts? Long-term or short-term? Drop a comment below.</p>
+</blockquote>
+<hr>
+<p><strong>Series Index:</strong></p>
+<ol>
+<li>✅ <strong>[This Episode]</strong> The Mathematical Logic of Spot vs. Contract Trading</li>
+<li>🔜 Environment Setup: Building a Quant System from Zero</li>
+<li>🔜 Data Cleaning: Why 80% of Strategies Die from Dirty Data</li>
+<li>🔜 Strategy Engine: The Core Architecture for AI-Powered Money Management</li>
+<li>🔜 Live Testing: The Gap Between Simulation and Real Markets</li>
+</ol>
+]]></content:encoded></item></channel></rss>
